@@ -1,0 +1,6 @@
+@resource_reservation_system_backend_HostAddress = http://localhost:5007
+
+GET {{resource_reservation_system_backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
