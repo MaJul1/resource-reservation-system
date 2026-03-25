@@ -1,0 +1,37 @@
+@startuml resource-reservation-system-class-diagram
+
+class Reservation {
+  int Id
+  DateTime Start
+  DateTime End
+  Status Status
+}
+
+class User {
+  int UserId
+  string FirstName
+  string LastName
+  string PhoneNumber
+  string Email
+}
+
+class Resource {
+  int Id
+  string Name
+  string Type
+  string Description
+}
+
+enum Status {
+  APPROVED
+  DENIED
+  CANCELLED
+  ONGOING
+  MOVED
+}
+
+Reservation "1" -- "1" User
+Reservation "1" -- "*" Resource
+
+
+@enduml
