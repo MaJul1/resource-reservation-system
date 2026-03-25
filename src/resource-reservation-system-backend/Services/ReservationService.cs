@@ -1,12 +1,14 @@
 using System;
 using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
+using resource_reservation_system_backend.DTO.Reservation;
+using resource_reservation_system_backend.Interfaces;
 using resource_reservation_system_backend.Models;
 using resource_reservation_system_backend.Persistence;
 
 namespace resource_reservation_system_backend.Services;
 
-public class ReservationService
+public class ReservationService : IReservationService
 {
   private readonly AppDbContext _context;
   public ReservationService(AppDbContext context)
@@ -14,19 +16,43 @@ public class ReservationService
     _context = context;
   }
 
-  public async Task<List<Reservation>> GetReservationAsync()
+  public Task ApproveAsync(int id)
   {
-    return await _context.Reservations.OrderBy(e => e.Id).ToListAsync();
+    throw new NotImplementedException();
   }
 
-  public async Task<List<Reservation>> GetReservationAsync(int page, int size)
+  public Task CancelAsync(int id)
   {
-    var reservations = await GetReservationAsync();
+    throw new NotImplementedException();
+  }
 
-    var filtered = reservations
-      .Skip((page - 1) * size)
-      .Take(size);
+  public Task CreateAsync(CreateReservationRequestDTO request)
+  {
+    throw new NotImplementedException();
+  }
 
-    return [.. filtered];
+  public Task DenyAsync(int id)
+  {
+    throw new NotImplementedException();
+  }
+
+  public Task<List<Reservation>> GetAllAsync()
+  {
+    throw new NotImplementedException();
+  }
+
+  public Task<List<Reservation>> GetAllAsync(int? page, int? size, string? sortBy)
+  {
+    throw new NotImplementedException();
+  }
+
+  public Task<Reservation> GetByIdAsync(int id)
+  {
+    throw new NotImplementedException();
+  }
+  
+  public Task MoveAsync(MoveReservationRequestDTO request)
+  {
+    throw new NotImplementedException();
   }
 }
