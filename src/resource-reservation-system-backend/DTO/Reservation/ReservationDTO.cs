@@ -1,6 +1,6 @@
 using System;
 
-namespace resource_reservation_system_backend.DTO;
+namespace resource_reservation_system_backend.DTO.Reservation;
 
 public class ReservationDTO
 {
