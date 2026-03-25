@@ -9,4 +9,8 @@ public class Reservation
   public DateTime Start {get; set;}
   public DateTime End {get; set;}
   public Status Status {get; set;}
+
+  public int UserId {get ;set;}
+  public User User {get; set;} = null!;
+  public ICollection<Resource> Resources {get; set;} = [];
 }

@@ -8,4 +8,7 @@ public class Resource
   public string Name {get; set;} = null!;
   public string Type {get; set;} = null!;
   public string Description {get; set;} = null!;
+
+  public int ReservationId {get; set;}
+  public Reservation Reservation {get; set;} = null!;
 }
