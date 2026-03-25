@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 using resource_reservation_system_backend.DTO.Reservation;
 using resource_reservation_system_backend.Interfaces;
+using resource_reservation_system_backend.Mapper;
 using resource_reservation_system_backend.Models;
 using resource_reservation_system_backend.Persistence;
 
@@ -36,21 +37,21 @@ public class ReservationService : IReservationService
     throw new NotImplementedException();
   }
 
-  public Task<List<Reservation>> GetAllAsync()
+  public Task<IEnumerable<ReservationDTO>> GetAllAsync()
   {
     throw new NotImplementedException();
   }
 
-  public Task<List<Reservation>> GetAllAsync(int? page, int? size, string? sortBy)
+  public Task<IEnumerable<ReservationDTO>> GetAllAsync(int? page, int? size, string? sortBy)
   {
     throw new NotImplementedException();
   }
 
-  public Task<Reservation> GetByIdAsync(int id)
+  public Task<ReservationDTO> GetByIdAsync(int id)
   {
     throw new NotImplementedException();
   }
-  
+
   public Task MoveAsync(MoveReservationRequestDTO request)
   {
     throw new NotImplementedException();
