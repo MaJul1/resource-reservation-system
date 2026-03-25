@@ -23,6 +23,7 @@ class Resource {
 }
 
 enum Status {
+  PENDING
   APPROVED
   DENIED
   CANCELLED
