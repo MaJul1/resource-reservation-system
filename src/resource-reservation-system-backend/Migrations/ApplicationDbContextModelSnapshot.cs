@@ -9,7 +9,7 @@ using resource_reservation_system_backend.Persistence;
 
 namespace resource_reservation_system_backend.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(AppDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

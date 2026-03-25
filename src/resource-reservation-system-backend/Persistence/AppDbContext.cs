@@ -3,9 +3,9 @@ using resource_reservation_system_backend.Models;
 
 namespace resource_reservation_system_backend.Persistence;
 
-public class ApplicationDbContext : DbContext
+public class AppDbContext : DbContext
 {
-  public ApplicationDbContext (DbContextOptions<ApplicationDbContext> builder) : base (builder)
+  public AppDbContext (DbContextOptions<AppDbContext> builder) : base (builder)
   { }
 
   public DbSet<Reservation> Reservations {get; set;}

@@ -10,7 +10,7 @@ using resource_reservation_system_backend.Persistence;
 
 namespace resource_reservation_system_backend.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20260325015452_Init")]
     partial class Init
     {
