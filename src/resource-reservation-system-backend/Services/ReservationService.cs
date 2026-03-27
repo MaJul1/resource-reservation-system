@@ -67,7 +67,7 @@ public class ReservationService : IReservationService
     return await Task.FromResult(_context.Reservations.Include(r => r.User).Select(r => r.ToReservationDTO()));
   }
 
-  public async Task<IEnumerable<ReservationDTO>> GetAllAsync(int page = 1, int size = 20, string sortBy = "id")
+  public async Task<IEnumerable<ReservationDTO>> GetAllAsync(int page, int size, string sortBy)
   {
     var reservations = _context.Reservations.Include(r => r.User);
 
