@@ -6,7 +6,7 @@ using resource_reservation_system_backend.Models;
 
 namespace resource_reservation_system_backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/reservation")]
     [ApiController]
     public class ReservationController : ControllerBase
     {
@@ -17,6 +17,14 @@ namespace resource_reservation_system_backend.Controllers
             _reservationService = reservationService;
         }
 
+        [HttpGet("get-reservations")]
+        public async Task<IActionResult> GetReservations(int? size, int? page, string? sortBy)
+        {   
+            var result = await _reservationService.GetAllAsync(page: page ?? 1,size: size ?? 20 , sortBy ?? "id");
+
+            return Ok(result);
+        }
+        
         [HttpPost("create-reservation")]
         public async Task<IActionResult> CreateReservation([FromBody] CreateReservationRequestDTO request)
         {
@@ -25,12 +33,38 @@ namespace resource_reservation_system_backend.Controllers
             return Ok();
         }
 
-        [HttpGet("get-reservations")]
-        public async Task<IActionResult> GetReservations(int? size, int? page, string? sortBy)
-        {   
-            var result = await _reservationService.GetAllAsync(page: page ?? 1,size: size ?? 20 , sortBy ?? "id");
+        [HttpPost("approve-reservation")]
+        public async Task<IActionResult> ApproveReservation(int id)
+        {
+            await _reservationService.ApproveAsync(id);
 
-            return Ok(result);
+            return Ok();
+        } 
+
+        [HttpPost("cancel-reservation")]
+        public async Task<IActionResult> CancelReservation(int id)
+        {
+            await _reservationService.CancelAsync(id);
+
+            return Ok();
         }
+
+        [HttpPost("deny-reservation")]
+        public async Task<IActionResult> DenyReservation(int id)
+        {
+            await _reservationService.DenyAsync(id);
+
+            return Ok();
+        }
+
+        [HttpPost("move-reservation")]
+        public async Task<IActionResult> MoveReservation([FromBody] MoveReservationRequestDTO request)
+        {
+            await _reservationService.MoveAsync(request);
+
+            return Ok();
+        }
+
+        
     }
 }

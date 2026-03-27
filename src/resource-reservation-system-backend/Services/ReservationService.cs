@@ -30,7 +30,12 @@ public class ReservationService : IReservationService
 
   public async Task CancelAsync(int id)
   {
+    var validStatus = new [] {Enums.Status.PENDING, Enums.Status.APPROVED};
+
     var reservation = await GetByIdThrowErrorIfNotFound(id);
+
+    if (!validStatus.Contains(reservation.Status))
+      throw new ArgumentException("Only pending and approved status can be cancelled");
 
     reservation.Status = Enums.Status.CANCELLED;
 
@@ -39,18 +44,9 @@ public class ReservationService : IReservationService
 
   public async Task CreateAsync(CreateReservationRequestDTO request)
   {
-    if (request.Start >= request.End) 
-      throw new ArgumentException("Start date should be earlier than End date");
-
-    if (DateTimeUtils.GetMinutesDifference(request.Start, request.End) < 60)
-      throw new ArgumentException("Start and End time should be at least 60 minutes long");
-
     var reservation = request.ToReservation();
 
-    if (!await IsAvailable(reservation))
-    {
-      throw new ArgumentException($"The reservation overlaps with an existing reservation.");
-    }
+    await ValidateReservation(reservation);
 
     _context.Reservations.Add(reservation);
 
@@ -84,7 +80,7 @@ public class ReservationService : IReservationService
       sortBy == "end" ? reservations.OrderBy (e => e.End) :
         reservations.OrderBy(e => e.Id);
 
-    var pagedReservation = reservations
+    var pagedReservation = orderedReservation
       .Skip((page - 1) * size)
       .Take(size);
 
@@ -107,9 +103,19 @@ public class ReservationService : IReservationService
     return dto;
   }
 
-  public Task MoveAsync(MoveReservationRequestDTO request)
+  public async Task MoveAsync(MoveReservationRequestDTO request)
   {
-    throw new NotImplementedException();
+    var reservation = await GetByIdThrowErrorIfNotFound(request.Id);
+
+    reservation.Start = request.NewStart;
+    reservation.End = request.NewEnd;
+
+    await ValidateReservation(reservation);
+
+    if (reservation.Status != Enums.Status.PENDING)
+      throw new ArgumentException("Unable to move non pending reservation.");
+
+    await _context.SaveChangesAsync();
   }
 
   private async Task<Reservation> GetByIdThrowErrorIfNotFound(int id)
@@ -122,11 +128,32 @@ public class ReservationService : IReservationService
 
   private async Task<bool> IsAvailable(Reservation reservation)
   {
+    var excluded = new []
+    {
+      Enums.Status.CANCELLED,
+      Enums.Status.DENIED
+    };
+
     var overlappingReservations = await _context.Reservations
       .Where(r => r.Id != reservation.Id)
+      .Where(r => !excluded.Contains(r.Status))
       .Where(r => r.Start < reservation.End && reservation.Start < r.End)
       .ToListAsync();
 
     return overlappingReservations.Count == 0;
+  }
+
+  private async Task ValidateReservation(Reservation request)
+  {
+    if (request.Start >= request.End) 
+      throw new ArgumentException("Start date should be earlier than End date");
+
+    // if (DateTimeUtils.GetMinutesDifference(request.Start, request.End) < 60)
+    //   throw new ArgumentException("Start and End time should be at least 60 minutes long");
+
+    if (!await IsAvailable(request))
+    {
+      throw new ArgumentException($"The reservation overlaps with an existing reservation.");
+    }
   }
 }

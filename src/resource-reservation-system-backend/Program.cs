@@ -1,6 +1,8 @@
 using System.Net.Mime;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using resource_reservation_system_backend.Background;
 using resource_reservation_system_backend.Interfaces;
 using resource_reservation_system_backend.Models;
 using resource_reservation_system_backend.Persistence;
@@ -13,6 +15,8 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<IReservationService, ReservationService>();
+
+builder.Services.AddHostedService<StatusUpdateBackgroundService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {

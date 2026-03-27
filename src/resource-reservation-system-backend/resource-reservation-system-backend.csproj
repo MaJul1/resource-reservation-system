@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Background/" />
     <Folder Include="Controllers/" />
     <Folder Include="DTO/User/" />
     <Folder Include="Enums/" />
