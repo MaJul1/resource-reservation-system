@@ -4,6 +4,7 @@ using resource_reservation_system_backend.Interfaces;
 using resource_reservation_system_backend.Mapper;
 using resource_reservation_system_backend.Models;
 using resource_reservation_system_backend.Persistence;
+using resource_reservation_system_backend.Utils;
 
 namespace resource_reservation_system_backend.Services;
 
@@ -38,6 +39,12 @@ public class ReservationService : IReservationService
 
   public async Task CreateAsync(CreateReservationRequestDTO request)
   {
+    if (request.Start >= request.End) 
+      throw new ArgumentException("Start date should be earlier than End date");
+
+    if (DateTimeUtils.GetMinutesDifference(request.Start, request.End) < 60)
+      throw new ArgumentException("Start and End time should be at least 60 minutes long");
+
     var reservation = request.ToReservation();
 
     if (!await IsAvailable(reservation))
