@@ -37,18 +37,29 @@ app.UseExceptionHandler(exceptionHandlerApp =>
 {
     exceptionHandlerApp.Run(async context =>
     {
-        var exceptionFeature = context.Features.Get<IExceptionHandlerPathFeature>();
-        var exception = exceptionFeature?.Error;
+        var feature = context.Features.Get<IExceptionHandlerPathFeature>();
+        var exception = feature?.Error;
+
+        var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
+        logger.LogError(exception, "Unhandled exception occurred.");
 
         var statusCode = exception switch
-        {   
-            ArgumentNullException => StatusCodes.Status404NotFound,
+        {
             ArgumentException => StatusCodes.Status400BadRequest,
+            KeyNotFoundException => StatusCodes.Status404NotFound,
             _ => StatusCodes.Status500InternalServerError
         };
 
         context.Response.StatusCode = statusCode;
-        await context.Response.WriteAsJsonAsync(new {message = exception?.Message});
+
+        var response = new
+        {
+            message = statusCode == 500 
+                ? "An unexpected error occurred." 
+                : exception?.Message
+        };
+
+        await context.Response.WriteAsJsonAsync(response);
     });
 });
 

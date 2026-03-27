@@ -21,28 +21,16 @@ namespace resource_reservation_system_backend.Controllers
         public async Task<IActionResult> CreateReservation([FromBody] CreateReservationRequestDTO request)
         {
             await _reservationService.CreateAsync(request);
+            
             return Ok();
         }
 
-        /// <summary>
-        /// Get reservations
-        /// </summary>
-        /// <param name="size"></param>
-        /// <param name="page"></param>
-        /// <param name="sortBy"></param>
-        /// <returns></returns>
         [HttpGet("get-reservations")]
         public async Task<IActionResult> GetReservations(int? size, int? page, string? sortBy)
         {   
             var result = await _reservationService.GetAllAsync(page: page ?? 1,size: size ?? 20 , sortBy ?? "id");
 
-            return Ok(new
-            {
-                size,
-                page,
-                sortBy,
-                result
-            });
+            return Ok(result);
         }
     }
 }
