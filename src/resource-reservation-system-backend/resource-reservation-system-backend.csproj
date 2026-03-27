@@ -21,6 +21,7 @@
   <ItemGroup>
     <Folder Include="Background/" />
     <Folder Include="Controllers/" />
+    <Folder Include="DTO/Resource/" />
     <Folder Include="DTO/User/" />
     <Folder Include="Enums/" />
     <Folder Include="Interfaces/" />
