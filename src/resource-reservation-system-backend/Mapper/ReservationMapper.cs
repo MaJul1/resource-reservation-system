@@ -19,4 +19,23 @@ public static class ReservationMapper
 
     return dto;
   }
+
+  public static Reservation ToReservation(this CreateReservationRequestDTO dto)
+  {
+    Reservation reservation = new ()
+    {
+      Start = dto.Start,
+      End = dto.End,
+      Status = Enums.Status.PENDING,
+      User = new User()
+      {
+        FirstName = dto.FirstName,
+        LastName = dto.LastName,
+        Email = dto.Email,
+        PhoneNumber = dto.PhoneNumber
+      }
+    };
+
+    return reservation;
+  }
 }

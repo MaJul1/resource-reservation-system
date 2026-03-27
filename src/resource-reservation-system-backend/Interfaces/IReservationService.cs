@@ -7,8 +7,8 @@ namespace resource_reservation_system_backend.Interfaces;
 public interface IReservationService
 {
   Task<IEnumerable<ReservationDTO>> GetAllAsync();
-  Task<IEnumerable<ReservationDTO>> GetAllAsync(int? page, int? size, string? sortBy);
-  Task<ReservationDTO> GetByIdAsync(int id);
+  Task<IEnumerable<ReservationDTO>> GetAllAsync(int page, int size, string sortBy);
+  Task<ReservationDTO?> GetByIdAsync(int id);
   Task CreateAsync(CreateReservationRequestDTO request);
   Task MoveAsync(MoveReservationRequestDTO request);
   Task ApproveAsync(int id);
