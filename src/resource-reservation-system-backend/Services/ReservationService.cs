@@ -148,8 +148,8 @@ public class ReservationService : IReservationService
     if (request.Start >= request.End) 
       throw new ArgumentException("Start date should be earlier than End date");
 
-    // if (DateTimeUtils.GetMinutesDifference(request.Start, request.End) < 60)
-    //   throw new ArgumentException("Start and End time should be at least 60 minutes long");
+    if (DateTimeUtils.GetMinutesDifference(request.Start, request.End) < 60)
+      throw new ArgumentException("Start and End time should be at least 60 minutes long");
 
     if (!await IsReservationTimeAvailable(request))
     {
