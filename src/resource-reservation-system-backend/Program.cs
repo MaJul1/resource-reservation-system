@@ -15,6 +15,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddScoped<IResourceService, ResourceService>();
 
 builder.Services.AddHostedService<StatusUpdateBackgroundService>();
 

@@ -75,7 +75,9 @@ public class ReservationService : IReservationService
 
   public async Task<IEnumerable<ReservationDTO>> GetAllAsync(int page, int size, string sortBy)
   {
-    var reservations = _context.Reservations.Include(r => r.User);
+    var reservations = _context.Reservations
+      .Include(r => r.User)
+      .Include(r => r.Resource);
 
     var orderedReservation = 
       sortBy == "status" ? reservations.OrderBy(e => e.Status) :
@@ -92,6 +94,7 @@ public class ReservationService : IReservationService
       .ToListAsync();
   }
 
+  //Mehh
   public async Task<ReservationDTO?> GetByIdAsync(int id)
   {
     var reservation = await _context.Reservations.FindAsync(id);
@@ -137,9 +140,10 @@ public class ReservationService : IReservationService
       Enums.Status.DENIED
     };
 
-    return await _context.Reservations
+    return !await _context.Reservations
       .Where(r => r.Id != reservation.Id)
       .Where(r => !excluded.Contains(r.Status))
+      .Where(r => r.ResourceId == reservation.ResourceId)
       .AnyAsync(r => r.Start < reservation.End && reservation.Start < r.End);
   }
 
@@ -155,8 +159,6 @@ public class ReservationService : IReservationService
       throw new KeyNotFoundException($"Resource with an id of {request.Id} not found");
 
     if (!await IsReservationTimeAvailable(request))
-    {
-      throw new ArgumentException($"The reservation overlaps with an existing reservation.");
-    }
+      throw new ArgumentException($"The reservation overlaps with an existing reservation for resource {request.ResourceId}.");
   }
 }

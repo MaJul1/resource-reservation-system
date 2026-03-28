@@ -18,4 +18,16 @@ public static class ResourceMapper
 
     return dto;
   }
+
+  public static Resource ToResource(this CreateResourceRequestDTO dto)
+  {
+    Resource resource = new ()
+    {
+      Name = dto.Name,
+      Type = dto.Type,
+      Description = dto.Description
+    };
+
+    return resource;
+  }
 }
