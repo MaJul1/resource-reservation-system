@@ -30,4 +30,15 @@ public static class ResourceMapper
 
     return resource;
   }
+
+  public static NameAndIdDTO ToNameAndIdDTO(this Resource resource)
+  {
+    NameAndIdDTO dto = new ()
+    {
+      Id = resource.Id,
+      Name = resource.Name
+    };
+
+    return dto;
+  }
 }

@@ -4,6 +4,7 @@ using resource_reservation_system_backend.Mapper;
 using resource_reservation_system_backend.Persistence;
 using resource_reservation_system_backend.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace resource_reservation_system_backend.Services;
 
@@ -24,9 +25,18 @@ public class ResourceService : IResourceService
     await _context.SaveChangesAsync();
   }
 
-  public Task<ResourceDTO> GetResourceById(int id)
+  public async Task<ResourceDTO> GetResourceById(int id)
   {
-    throw new NotImplementedException();
+    var resource = await _context.Resources.FindAsync(id) ?? 
+      throw new KeyNotFoundException($"Resource with an id of {id} not found.");
+    
+    return resource.ToResourceDTO();
+  }
+
+  public async Task<IEnumerable<NameAndIdDTO>> GetResourceNamesAndId()
+  {
+    return await 
+      _context.Resources.Select(r => r.ToNameAndIdDTO()).ToListAsync();
   }
 
   public async Task<IEnumerable<ResourceDTO>> GetResources(int page, int size, string sortBy)

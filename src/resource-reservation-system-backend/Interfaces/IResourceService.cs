@@ -9,4 +9,5 @@ public interface IResourceService
   Task<IEnumerable<ResourceDTO>> GetResources(int page, int size, string sortBy);
   Task Create(CreateResourceRequestDTO request);
   Task<ResourceDTO> GetResourceById(int id); 
+  Task<IEnumerable<NameAndIdDTO>> GetResourceNamesAndId();
 }

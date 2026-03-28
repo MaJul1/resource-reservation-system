@@ -1,9 +1,12 @@
 import { config } from './config.js';
 
 const getReservationPathUrl = config.apiUrl + "/api/reservation/get-reservations";
+const getResourceInfoPathUrl = config.apiUrl + "/api/resource/get-resources-info";
 const tableBody = document.getElementById("reservation-table-body");
 const paginationElement = document.getElementById("reservation-pagination");
 const pageSizeElement = document.getElementById("reservation-page-size");
+const resourceSelectElement = document.getElementById("reservation-resource-select");
+const addReservationLinkElement = document.getElementById("add-reservation-link");
 
 const searchParams = new URLSearchParams(window.location.search);
 const currentPage = Math.max(Number.parseInt(searchParams.get("page") ?? "1", 10) || 1, 1);
@@ -61,6 +64,41 @@ function setMessageRow(message) {
   }
 
   tableBody.innerHTML = `<tr><td colspan="6" class="text-center">${message}</td></tr>`;
+}
+
+function setResourceOptions(resources) {
+  if (!resourceSelectElement) {
+    return;
+  }
+
+  if (!Array.isArray(resources) || resources.length === 0) {
+    resourceSelectElement.innerHTML = "<option selected>No resources found</option>";
+    resourceSelectElement.disabled = true;
+    return;
+  }
+
+  resourceSelectElement.disabled = false;
+  resourceSelectElement.innerHTML =
+    '<option value="" selected disabled>Select a resource</option>' +
+    resources
+      .map(resource => `<option value="${resource.id}">${resource.name ?? "-"}</option>`)
+      .join("");
+}
+
+if (addReservationLinkElement) {
+  addReservationLinkElement.addEventListener("click", event => {
+    const selectedResourceId = resourceSelectElement?.value;
+
+    if (!selectedResourceId) {
+      event.preventDefault();
+      window.alert("Please select a resource first.");
+      return;
+    }
+
+    const params = new URLSearchParams();
+    params.set("id", selectedResourceId);
+    addReservationLinkElement.href = `add-reservation.html?${params.toString()}`;
+  });
 }
 
 function buildPageUrl(page) {
@@ -146,6 +184,26 @@ const apiUrl = new URL(getReservationPathUrl);
 apiUrl.searchParams.set("page", String(currentPage));
 apiUrl.searchParams.set("size", String(pageSize));
 apiUrl.searchParams.set("sortBy", sortBy);
+
+fetch(getResourceInfoPathUrl)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+
+    return response.json();
+  })
+  .then(resources => {
+    setResourceOptions(resources);
+  })
+  .catch(error => {
+    console.error("Failed to fetch resources:", error);
+
+    if (resourceSelectElement) {
+      resourceSelectElement.innerHTML = "<option selected>Failed to load resources</option>";
+      resourceSelectElement.disabled = true;
+    }
+  });
 
 fetch(apiUrl.toString())
   .then(response => {

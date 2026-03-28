@@ -24,10 +24,26 @@ namespace resource_reservation_system_backend.Controllers
             return Ok();
         }
 
-        [HttpGet]
+        [HttpGet("get-resources")]
         public async Task<IActionResult> GetRessource(int? page, int? size, string? sortBy)
         {
             var result = await _service.GetResources(page: page ?? 1, size: size ?? 20, sortBy: sortBy = "id");
+
+            return Ok(result);
+        }
+
+        [HttpGet("get-resources-info")]
+        public async Task<IActionResult> GetResourceNameAndId()
+        {
+            var result = await _service.GetResourceNamesAndId();
+
+            return Ok(result);
+        }
+
+        [HttpGet("get-resrouce-by-id/{id}")]
+        public async Task<IActionResult> GetResourceById(int id)
+        {
+            var result = await _service.GetResourceById(id);
 
             return Ok(result);
         }
