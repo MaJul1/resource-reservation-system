@@ -12,5 +12,6 @@ public class Reservation
 
   public int UserId {get ;set;}
   public User User {get; set;} = null!;
-  public ICollection<Resource> Resources {get; set;} = [];
+  public int ResourceId {get; set;}
+  public Resource Resource {get; set;} = null!;
 }

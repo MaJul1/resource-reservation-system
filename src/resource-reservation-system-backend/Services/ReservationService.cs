@@ -151,6 +151,9 @@ public class ReservationService : IReservationService
     if (DateTimeUtils.GetMinutesDifference(request.Start, request.End) < 60)
       throw new ArgumentException("Start and End time should be at least 60 minutes long");
 
+    if (!await _context.Resources.AnyAsync(r => r.Id == request.ResourceId))
+      throw new KeyNotFoundException($"Resource with an id of {request.Id} not found");
+
     if (!await IsReservationTimeAvailable(request))
     {
       throw new ArgumentException($"The reservation overlaps with an existing reservation.");

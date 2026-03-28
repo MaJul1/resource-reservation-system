@@ -15,6 +15,7 @@ public static class ReservationMapper
       Start = DateTimeUtils.ToUtcString(reservation.Start),
       End = DateTimeUtils.ToUtcString(reservation.End),
       Status = reservation.Status,
+      Resource = reservation.Resource.ToResourceDTO(),
       User = reservation.User.ToUserDTO()
     };
 
@@ -28,6 +29,7 @@ public static class ReservationMapper
       Start = dto.Start,
       End = dto.End,
       Status = Enums.Status.PENDING,
+      ResourceId = dto.ResourceId,
       User = new User()
       {
         FirstName = dto.FirstName,

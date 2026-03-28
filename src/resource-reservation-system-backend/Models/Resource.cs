@@ -9,6 +9,6 @@ public class Resource
   public string Type {get; set;} = null!;
   public string Description {get; set;} = null!;
 
-  public int ReservationId {get; set;}
-  public Reservation Reservation {get; set;} = null!;
+  public ICollection<Reservation> Reservations {get; set;} = [];
+
 }
