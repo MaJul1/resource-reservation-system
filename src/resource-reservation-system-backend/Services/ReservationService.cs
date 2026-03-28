@@ -80,10 +80,10 @@ public class ReservationService : IReservationService
       .Include(r => r.Resource);
 
     var orderedReservation = 
-      sortBy == "status" ? reservations.OrderBy(e => e.Status) :
-      sortBy == "start" ? reservations.OrderBy(e => e.Start) :
-      sortBy == "end" ? reservations.OrderBy (e => e.End) :
-        reservations.OrderBy(e => e.Id);
+      sortBy == "status" ? reservations.OrderByDescending(e => e.Status) :
+      sortBy == "start" ? reservations.OrderByDescending(e => e.Start) :
+      sortBy == "end" ? reservations.OrderByDescending (e => e.End) :
+        reservations.OrderByDescending(e => e.Id);
 
     var pagedReservation = orderedReservation
       .Skip((page - 1) * size)

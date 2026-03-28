@@ -214,11 +214,6 @@ function renderActions(status) {
 
   actionsElement.innerHTML = '';
 
-  const backButton = createActionButton('Back', 'btn btn-secondary', () => {
-    window.location.href = buildBackUrl();
-  });
-  actionsElement.appendChild(backButton);
-
   if (status === 1) {
     actionsElement.appendChild(createActionButton('Approve', 'btn btn-success', async () => {
       try {
@@ -272,6 +267,11 @@ function renderActions(status) {
       }
     }));
   }
+
+  const backButton = createActionButton('Back', 'btn btn-secondary', () => {
+    window.location.href = buildBackUrl();
+  });
+  actionsElement.appendChild(backButton);
 }
 
 function populateReservation(reservation) {
