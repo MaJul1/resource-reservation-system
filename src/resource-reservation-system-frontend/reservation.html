@@ -82,41 +82,27 @@
           <th>Status</th>
         </tr>
       </thead>
-      <tbody>
-        <tr onclick="window.location.href = 'detailed-reservation.html'">
-          <td>1</td>
-          <td>Room 1</td>
-          <td>Mark Julius Milan</td>
-          <td>August 10, 2020, 4:30 pm</td>
-          <td>August 10, 2020, 5:30 pm</td>
-          <td>Approved</td>
-        </tr>
-        <tr onclick="window.location.href = 'detailed-reservation.html'">
-          <td>1</td>
-          <td>Room 1</td>
-          <td>Mark Julius Milan</td>
-          <td>August 10, 2020, 4:30 pm</td>
-          <td>August 10, 2020, 5:30 pm</td>
-          <td>Approved</td>
-        </tr>
-        <tr onclick="window.location.href = 'detailed-reservation.html'">
-          <td>1</td>
-          <td>Room 1</td>
-          <td>Mark Julius Milan</td>
-          <td>August 10, 2020, 4:30 pm</td>
-          <td>August 10, 2020, 5:30 pm</td>
-          <td>Approved</td>
-        </tr>
-        <tr onclick="window.location.href = 'detailed-reservation.html'">
-          <td>1</td>
-          <td>Room 1</td>
-          <td>Mark Julius Milan</td>
-          <td>August 10, 2020, 4:30 pm</td>
-          <td>August 10, 2020, 5:30 pm</td>
-          <td>Approved</td>
+      <tbody id="reservation-table-body">
+        <tr>
+          <td colspan="6" class="text-center">Loading reservations...</td>
         </tr>
       </tbody>
     </table>
+
+    <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center">
+      <div class="d-flex align-items-center gap-2">
+        <label for="reservation-page-size" class="form-label mb-0">Rows per page</label>
+        <select id="reservation-page-size" class="form-select form-select-sm w-auto">
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+
+      <nav aria-label="Reservation pagination">
+        <ul id="reservation-pagination" class="pagination pagination-sm mb-0"></ul>
+      </nav>
+    </div>
   </div>
 </body>
 

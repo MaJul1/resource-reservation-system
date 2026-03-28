@@ -39,27 +39,28 @@
   <div class="container">
     <h3>Reservation</h3>
     <hr>
+    <div id="reservation-detail-alert" class="alert alert-danger d-none" role="alert"></div>
 
     <h5>Reservation Details</h5>
     <div class="row">
       <div class="col">
         <label class="form-label">Reservation Id</label>
-        <input type="text" class="form-control" value="001" disabled>
+        <input id="reservation-id" type="text" class="form-control" value="Loading..." disabled>
       </div>
       <div class="col">
         <label class="form-label">Status</label>
-        <input type="text" class="form-control" value="Approved" disabled>
+        <input id="reservation-status" type="text" class="form-control" value="Loading..." disabled>
       </div>
     </div>
 
     <div class="row mt-3">
       <div class="col">
         <label class="form-label">Starting Date</label>
-        <input type="text" class="form-control" value="August 10, 2026, 4:30pm" disabled>
+        <input id="reservation-start" type="text" class="form-control" value="Loading..." disabled>
       </div>
       <div class="col">
         <label class="form-label">End Date</label>
-        <input type="text" class="form-control" value="August 10, 2026, 5:30pm" disabled>
+        <input id="reservation-end" type="text" class="form-control" value="Loading..." disabled>
       </div>
     </div>
 
@@ -67,22 +68,22 @@
     <div class="row">
       <div class="col">
         <label class="form-label">Resource Id</label>
-        <input type="text" class="form-control" value="001" disabled>
+        <input id="resource-id" type="text" class="form-control" value="Loading..." disabled>
       </div>
       <div class="col">
         <label class="form-label">Resource Name</label>
-        <input type="text" class="form-control" value="Room 001" disabled>
+        <input id="resource-name" type="text" class="form-control" value="Loading..." disabled>
       </div>
     </div>
 
     <div class="row mt-3">
       <div class="col">
         <label class="form-label">Resource Type</label>
-        <input type="text" class="form-control" value="Classroom" disabled>
+        <input id="resource-type" type="text" class="form-control" value="Loading..." disabled>
       </div>
       <div class="col">
         <label class="form-label">Resource Description</label>
-        <input type="text" class="form-control" value="A room for studies and class." disabled>
+        <input id="resource-description" type="text" class="form-control" value="Loading..." disabled>
       </div>
     </div>
 
@@ -90,21 +91,21 @@
     <div class="row">
       <div class="col">
         <label class="form-label">First Name</label>
-        <input type="text" class="form-control" value="Mark Julius" disabled>
+        <input id="user-first-name" type="text" class="form-control" value="Loading..." disabled>
       </div>
       <div class="col">
         <label class="form-label">Last Name</label>
-        <input type="text" class="form-control" value="Milan" disabled>
+        <input id="user-last-name" type="text" class="form-control" value="Loading..." disabled>
       </div>
     </div>
     <div class="row">
       <div class="col">
         <label class="form-label">Phone Number</label>
-        <input type="text" class="form-control" value="09123456789" disabled>
+        <input id="user-phone-number" type="text" class="form-control" value="Loading..." disabled>
       </div>
       <div class="col">
         <label class="form-label">Email</label>
-        <input type="text" class="form-control" value="majul@example.com" disabled>
+        <input id="user-email" type="text" class="form-control" value="Loading..." disabled>
       </div>
     </div>
 
@@ -112,6 +113,9 @@
       <button class="btn btn-success">Approve</button>
       <button class="btn btn-danger">Cancel</button>
     </div>
+  </div>
 </body>
+
+<script type="module" src="js/detailed-reservation.js"></script>
 
 </html>

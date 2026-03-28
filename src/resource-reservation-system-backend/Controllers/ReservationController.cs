@@ -24,6 +24,12 @@ namespace resource_reservation_system_backend.Controllers
 
             return Ok(result);
         }
+        [HttpGet("get-reservation/{id}")]
+        public async Task<IActionResult> GetReservationById(int id) {
+            var result = await _reservationService.GetByIdAsync(id);
+
+            return Ok(result);
+        }
         
         [HttpPost("create-reservation")]
         public async Task<IActionResult> CreateReservation([FromBody] CreateReservationRequestDTO request)

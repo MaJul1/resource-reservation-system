@@ -94,10 +94,12 @@ public class ReservationService : IReservationService
       .ToListAsync();
   }
 
-  //Mehh
   public async Task<ReservationDTO?> GetByIdAsync(int id)
   {
-    var reservation = await _context.Reservations.FindAsync(id);
+    var reservation = await _context.Reservations
+      .Include(r => r.User)
+      .Include(r => r.Resource)
+      .FirstOrDefaultAsync(r => r.Id == id);
 
     if (reservation is null)
     {
