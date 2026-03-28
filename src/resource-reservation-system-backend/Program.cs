@@ -17,6 +17,16 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IResourceService, ResourceService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(options =>
+    {
+        options.AllowAnyHeader();
+        options.AllowAnyMethod();
+        options.AllowAnyOrigin();
+    });
+});
+
 builder.Services.AddHostedService<StatusUpdateBackgroundService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -67,6 +77,8 @@ app.UseExceptionHandler(exceptionHandlerApp =>
         await context.Response.WriteAsJsonAsync(response);
     });
 });
+
+app.UseCors();
 
 app.MapControllers();
 
