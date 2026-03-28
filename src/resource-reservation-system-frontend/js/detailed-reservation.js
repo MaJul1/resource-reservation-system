@@ -30,6 +30,10 @@ const searchParams = new URLSearchParams(window.location.search);
 const reservationId = Number.parseInt(searchParams.get('id') ?? '', 10);
 let currentReservation = null;
 
+function redirectTo404() {
+  window.location.href = '404.html';
+}
+
 function showError(message) {
   if (!alertElement) {
     return;
@@ -298,6 +302,11 @@ async function loadReservation() {
 
   const response = await fetch(detailUrl);
 
+  if (response.status === 404) {
+    redirectTo404();
+    return;
+  }
+
   if (!response.ok) {
     throw new Error(`Request failed with status ${response.status}`);
   }
@@ -305,7 +314,8 @@ async function loadReservation() {
   const reservation = await response.json();
 
   if (!reservation) {
-    throw new Error('Reservation not found.');
+    redirectTo404();
+    return;
   }
 
   currentReservation = reservation;

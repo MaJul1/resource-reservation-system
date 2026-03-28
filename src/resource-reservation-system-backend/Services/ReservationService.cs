@@ -102,9 +102,7 @@ public class ReservationService : IReservationService
       .FirstOrDefaultAsync(r => r.Id == id);
 
     if (reservation is null)
-    {
-      return null;
-    }
+      throw new KeyNotFoundException($"Reservationwith an id of {id} not found.");
 
     var dto = reservation.ToReservationDTO();
 
