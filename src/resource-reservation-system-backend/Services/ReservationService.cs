@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using resource_reservation_system_backend.DTO.Reservation;
 using resource_reservation_system_backend.Interfaces;
@@ -11,9 +13,11 @@ namespace resource_reservation_system_backend.Services;
 public class ReservationService : IReservationService
 {
   private readonly AppDbContext _context;
-  public ReservationService(AppDbContext context)
+  private readonly IEmailSender _emailSender;
+  public ReservationService(AppDbContext context, IEmailSender emailSender)
   {
     _context = context;
+    _emailSender = emailSender;
   }
 
   public async Task ApproveAsync(int id)
@@ -26,6 +30,9 @@ public class ReservationService : IReservationService
     reservation.Status = Enums.Status.APPROVED;
 
     await _context.SaveChangesAsync();
+    
+    _ = _emailSender.SendEmailAsync(reservation.User.Email, "Approved Reservation", "Your reservation has been approved.");
+
   }
 
   public async Task CancelAsync(int id)
@@ -40,6 +47,8 @@ public class ReservationService : IReservationService
     reservation.Status = Enums.Status.CANCELLED;
 
     await _context.SaveChangesAsync();
+ 
+    _ =  _emailSender.SendEmailAsync(reservation.User.Email, "Cancelled Reservation", "Your reservation has been cancelled.");
   }
 
   public async Task CreateAsync(CreateReservationRequestDTO request)
@@ -63,6 +72,8 @@ public class ReservationService : IReservationService
     reservation.Status = Enums.Status.DENIED;
 
     await _context.SaveChangesAsync();
+    
+    _ = _emailSender.SendEmailAsync(reservation.User.Email, "Denied Reservation", "Your reservation has been denied.");
   }
 
   public async Task<IEnumerable<ReservationDTO>> GetAllAsync()
@@ -126,7 +137,7 @@ public class ReservationService : IReservationService
 
   private async Task<Reservation> GetByIdOrThrowAsync(int id)
   {
-      var reservation = await _context.Reservations.FindAsync(id)
+      var reservation = await _context.Reservations.Include(r => r.User).FirstOrDefaultAsync(r => r.Id == id)
       ?? throw new KeyNotFoundException($"Reservation not found with an id of {id}");
 
       return reservation;
