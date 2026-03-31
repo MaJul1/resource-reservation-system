@@ -1,5 +1,8 @@
+using System.Runtime.CompilerServices;
+using System.Transactions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using resource_reservation_system_backend.DTO.Reservation;
 using resource_reservation_system_backend.Interfaces;
 using resource_reservation_system_backend.Models;
@@ -27,6 +30,14 @@ namespace resource_reservation_system_backend.Controllers
         [HttpGet("get-reservation/{id}")]
         public async Task<IActionResult> GetReservationById(int id) {
             var result = await _reservationService.GetByIdAsync(id);
+
+            return Ok(result);
+        }
+
+        [HttpGet("get-reservation-by-resource/{resourceId}")]
+        public async Task<IActionResult> GetReservationByResourceId(int resourceId ,int? size, int? page, string? sortBy)
+        {
+            var result = await _reservationService.GetByResourceId(resourceId, page ?? 1, size ?? 20, sortBy ?? "id");
 
             return Ok(result);
         }

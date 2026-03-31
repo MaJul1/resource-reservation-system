@@ -120,6 +120,29 @@ public class ReservationService : IReservationService
     return dto;
   }
 
+  public async Task<IEnumerable<ReservationDTO>> GetByResourceId(int resourceId, int page, int size, string sortBy)
+  {
+    if (!await _context.Resources.AnyAsync(r => r.Id == resourceId))
+      throw new KeyNotFoundException($"Resource with an id of {resourceId} not found.");
+
+    var reservations = _context.Reservations
+      .Include(r => r.User)
+      .Include(r => r.Resource)
+      .Where(r => r.ResourceId == resourceId);
+
+    var sorted = 
+      sortBy == "status" ? reservations.OrderByDescending(r => r.Status) :
+      sortBy == "start" ? reservations.OrderByDescending(r => r.Start) :
+      sortBy == "end" ? reservations.OrderByDescending(r => r.End) :
+      reservations.OrderByDescending(r => r.Id);
+
+    var paginated = sorted.Skip((page - 1) * size).Take(size);
+
+    var dto = paginated.Select(r => r.ToReservationDTO());
+
+    return await dto.ToListAsync();
+  }
+
   public async Task MoveAsync(MoveReservationRequestDTO request)
   {
     var reservation = await GetByIdOrThrowAsync(request.Id);
