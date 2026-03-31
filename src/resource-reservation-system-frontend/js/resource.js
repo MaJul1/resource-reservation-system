@@ -63,6 +63,13 @@ function renderResources(resources) {
 
   resources.forEach(resource => {
     const row = document.createElement('tr');
+    row.style.cursor = 'pointer';
+
+    row.addEventListener('click', () => {
+      const params = new URLSearchParams(window.location.search);
+      params.set('id', String(resource.id));
+      window.location.href = `resource-detail.html?${params.toString()}`;
+    });
 
     row.innerHTML = `
       <td>${resource.id ?? '-'}</td>

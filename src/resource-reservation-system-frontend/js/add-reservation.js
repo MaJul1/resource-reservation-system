@@ -216,6 +216,19 @@ function setTitle(name) {
   document.title = `Add Reservation - ${resourceName}`;
 }
 
+if (cancelButtonElement) {
+  cancelButtonElement.addEventListener('click', event => {
+    event.preventDefault();
+
+    if (window.history.length > 1) {
+      window.history.back();
+      return;
+    }
+
+    window.location.href = 'reservation.html';
+  });
+}
+
 if (!Number.isInteger(resourceId) || resourceId <= 0) {
   redirectTo404();
 } else {
@@ -236,10 +249,6 @@ if (!Number.isInteger(resourceId) || resourceId <= 0) {
       }
 
       setTitle(resource.name);
-
-      if (cancelButtonElement) {
-        cancelButtonElement.href = 'reservation.html';
-      }
 
       setDefaultDateTimeInputs();
 
