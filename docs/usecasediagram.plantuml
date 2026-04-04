@@ -1,0 +1,49 @@
+@startuml resource-reservation-system-usecase-diagram
+
+title Resource Reservation System - Use Case Diagram
+left to right direction
+
+actor User
+actor Admin
+actor "Resource Manager" as ResourceManager
+
+rectangle "Resource Reservation System" {
+  usecase "View Resources" as UC_ViewResources
+  usecase "View Resource Detail" as UC_ViewResourceDetail
+  usecase "Create Resource" as UC_CreateResource
+
+  usecase "Create Reservation" as UC_CreateReservation
+  usecase "View Reservations" as UC_ViewReservations
+  usecase "View Reservation Detail" as UC_ViewReservationDetail
+  usecase "Move Reservation" as UC_MoveReservation
+
+  usecase "Approve Reservation" as UC_ApproveReservation
+  usecase "Deny Reservation" as UC_DenyReservation
+  usecase "Cancel Reservation" as UC_CancelReservation
+
+  usecase "Send Notification Email" as UC_SendEmail
+  usecase "Auto Update Reservation Status" as UC_AutoUpdateStatus
+}
+
+User --> UC_ViewResources
+User --> UC_ViewResourceDetail
+User --> UC_CreateReservation
+User --> UC_ViewReservations
+User --> UC_ViewReservationDetail
+User --> UC_MoveReservation
+
+Admin --> UC_ViewReservations
+Admin --> UC_ViewReservationDetail
+Admin --> UC_ApproveReservation
+Admin --> UC_DenyReservation
+Admin --> UC_CancelReservation
+
+ResourceManager --> UC_CreateResource
+ResourceManager --> UC_ViewResources
+ResourceManager --> UC_ViewResourceDetail
+
+UC_ApproveReservation ..> UC_SendEmail : <<include>>
+UC_DenyReservation ..> UC_SendEmail : <<include>>
+UC_CancelReservation ..> UC_SendEmail : <<include>>
+
+@enduml

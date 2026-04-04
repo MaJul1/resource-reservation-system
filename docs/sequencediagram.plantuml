@@ -1,0 +1,65 @@
+@startuml resource-reservation-system-sequence-diagram
+
+title Create Reservation - Sequence Diagram
+
+autonumber
+
+actor User
+participant "Browser UI" as UI
+participant "ReservationController" as Controller
+participant "ReservationService" as Service
+participant "AppDbContext" as Db
+participant "EmailSender" as Email
+
+User -> UI : Fill reservation form and submit
+UI -> Controller : POST /api/reservation/create-reservation
+activate Controller
+
+Controller -> Service : CreateAsync(request)
+activate Service
+
+Service -> Db : Check resource exists
+Db --> Service : exists / not found
+
+alt Resource missing
+  Service --> Controller : KeyNotFoundException
+  Controller --> UI : Error response
+else Resource exists
+  Service -> Service : Validate start/end and minimum duration
+
+  Service -> Db : Check overlapping active reservations
+  Db --> Service : overlap / available
+
+  alt Time overlaps
+    Service --> Controller : ArgumentException
+    Controller --> UI : Error response
+  else Available
+    Service -> Db : Insert reservation (PENDING)
+    Service -> Db : SaveChanges()
+    Db --> Service : Saved
+    Service --> Controller : Success
+    Controller --> UI : 200 OK
+  end
+end
+
+deactivate Service
+deactivate Controller
+
+== Later: admin status action ==
+
+actor Admin
+Admin -> UI : Click Approve / Deny / Cancel
+UI -> Controller : POST status action endpoint
+activate Controller
+Controller -> Service : ApproveAsync / DenyAsync / CancelAsync
+activate Service
+Service -> Db : Load reservation by id
+Db --> Service : Reservation
+Service -> Db : Update status and SaveChanges()
+Service -> Email : SendEmailAsync(...)
+Service --> Controller : Success
+Controller --> UI : 200 OK
+deactivate Service
+deactivate Controller
+
+@enduml
