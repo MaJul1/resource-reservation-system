@@ -1,8 +1,6 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using resource_reservation_system_backend.DTO.Facility;
 using resource_reservation_system_backend.Interfaces;
-using resource_reservation_system_backend.Models;
 
 namespace resource_reservation_system_backend.Controllers
 {
@@ -46,6 +44,22 @@ namespace resource_reservation_system_backend.Controllers
             var result = await _service.GetFacilityById(id);
 
             return Ok(result);
+        }
+
+        [HttpPost("update-facility")]
+        public async Task<IActionResult> UpdateFacility([FromBody]UpdateFacilityRequestDTO request)
+        {
+            await _service.Update(request);
+
+            return Ok();
+        }
+
+        [HttpDelete("delete-facility")]
+        public async Task<IActionResult> DeleteFacility(int id)
+        {
+            await _service.Delete(id);
+
+            return Ok();
         }
     }
 }

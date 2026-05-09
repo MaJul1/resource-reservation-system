@@ -76,4 +76,28 @@ public class FacilityService : IFacilityService
     var dto = pagedResource.Select(e => e.ToFacilityDTO());
     return await dto.ToListAsync();
   }
+
+  public async Task Update(UpdateFacilityRequestDTO request)
+  {
+    var facility = await _context.Facilities.FindAsync(request.Id) ?? 
+      throw new KeyNotFoundException($"Resource with an id of {request.Id} not found.");
+
+    facility.Name = request.Name;
+    facility.Type = request.Type;
+    facility.Location = request.Location;
+    facility.Capacity = request.Capacity;
+    facility.Description = request.Description;
+
+    _context.Facilities.Update(facility);
+    await _context.SaveChangesAsync();
+  }
+
+  public async Task Delete(int id)
+  {
+    var facility = await _context.Facilities.FindAsync(id) ?? 
+      throw new KeyNotFoundException($"Resource with an id of {id} not found.");
+
+    _context.Facilities.Remove(facility);
+    await _context.SaveChangesAsync();
+  }
 }
