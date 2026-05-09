@@ -13,6 +13,6 @@ public class Facility
 
   public ICollection<Reservation> Reservations {get; set;} = [];
   public ICollection<Department> Departments {get; set;} = [];
-  public ICollection<ItemDistribution> Items {get; set;} = [];
+  public ICollection<ItemAllocation> ItemsAllocated {get; set;} = [];
 
 }

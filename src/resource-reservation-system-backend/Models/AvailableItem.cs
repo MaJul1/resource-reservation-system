@@ -2,10 +2,10 @@ using System;
 
 namespace resource_reservation_system_backend.Models;
 
-public class ItemDistribution
+public class AvailableItem
 {
-  public int Id {get; set;}
-  public int ItemId {get; set;}
+  public int Inventory_id {get; set;}
   public string Name {get; set;} = null!;
+  public string Description {get; set;} = null!;
   public int Quantity {get; set;}
 }

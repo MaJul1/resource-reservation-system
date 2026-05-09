@@ -13,6 +13,9 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IFacilityService, FacilityService>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
+
+builder.Services.AddHttpClient();
 
 builder.Services.AddCors(options =>
 {
