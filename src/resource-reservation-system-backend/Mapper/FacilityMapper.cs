@@ -6,7 +6,7 @@ namespace resource_reservation_system_backend.Mapper;
 
 public static class FacilityMapper
 {
-  public static DetailedFacilityDTO ToFacilityDTO(this Facility facility)
+  public static DetailedFacilityDTO ToDetailedFacilityDTO(this Facility facility)
   {
     DetailedFacilityDTO dto = new ()
     {
@@ -16,7 +16,8 @@ public static class FacilityMapper
       Location = facility.Location,
       Capacity = facility.Capacity,
       Description = facility.Description,
-      ItemsAllocated = facility.ItemsAllocated.Select(itemAllocation => itemAllocation.ToItemAllocationDTO())
+      ItemsAllocated = facility.ItemsAllocated.Select(itemAllocation => itemAllocation.ToItemAllocationDTO()),
+      Departments = facility.Departments.Select(d => d.ToDepartmentDTO())
     };
 
     return dto;

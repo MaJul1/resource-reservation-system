@@ -34,16 +34,16 @@ public class DepartmentService : IDepartmentService
     await _context.SaveChangesAsync();
   }
 
-  public async Task<IEnumerable<DepartmentDTO>> GetAllDepartments()
+  public async Task<IEnumerable<SummaryDepartmentDTO>> GetAllDepartments()
   {
     var departments = await _context.Departments.ToListAsync();
     return departments.Select(d => d.ToDepartmentDTO());
   }
 
-  public async Task<DepartmentDTO> GetDepartmentById(int id)
+  public async Task<DetailedDepartmentDTO> GetDepartmentById(int id)
   {
     var department = await _context.Departments.FindAsync(id);
-    return department?.ToDepartmentDTO() ?? throw new KeyNotFoundException("Department not found");
+    return department?.ToDetailedDepartmentDTO() ?? throw new KeyNotFoundException("Department not found");
   }
 
   public Task UpdateDepartment(int id, string name)

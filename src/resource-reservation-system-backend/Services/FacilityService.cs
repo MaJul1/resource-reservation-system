@@ -53,27 +53,32 @@ public class FacilityService : IFacilityService
 
   public async Task<DetailedFacilityDTO> GetFacilityById(int id)
   {
-    var resource = await _context.Facilities.FindAsync(id) ?? 
-      throw new KeyNotFoundException($"Resource with an id of {id} not found.");
+    var resource = await _context.Facilities
+      .Include(f => f.ItemsAllocated)
+      .Include(f => f.Departments)
+      .Where(f => f.Id == id)
+      .AsSplitQuery()
+      .FirstOrDefaultAsync()
+      ?? throw new KeyNotFoundException($"Resource with an id of {id} not found.");
     
-    return resource.ToFacilityDTO();
+    return resource.ToDetailedFacilityDTO();
   }
 
   public async Task<IEnumerable<NameAndIdDTO>> GetFacilityNamesAndId()
   {
-    return await 
-      _context.Facilities.Select(r => r.ToNameAndIdDTO()).ToListAsync();
+    return await _context.Facilities.Select(r => r.ToNameAndIdDTO()).ToListAsync();
   }
 
-  public async Task<IEnumerable<DetailedFacilityDTO>> GetFacility(int page, int size, string sortBy)
+  public async Task<IEnumerable<SummarizedFacilityDTO>> GetFacility(int page, int size, string sortBy)
   {
-    var resources = sortBy == "name" ? _context.Facilities.OrderBy(e => e.Name) : 
-    sortBy == "type" ? _context.Facilities.OrderBy(e => e.Type) :
+    var resources = sortBy == "name" ? 
+    _context.Facilities.OrderBy(e => e.Name) : sortBy == "type" ? 
+    _context.Facilities.OrderBy(e => e.Type) :
     _context.Facilities.OrderBy(e => e.Id);
 
     var pagedResource = resources.Skip((page - 1) * size).Take(size);
 
-    var dto = pagedResource.Select(e => e.ToFacilityDTO());
+    var dto = pagedResource.Select(e => e.ToSummarizedFacilityDTO());
     return await dto.ToListAsync();
   }
 

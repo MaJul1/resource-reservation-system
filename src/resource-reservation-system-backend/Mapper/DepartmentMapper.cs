@@ -6,12 +6,22 @@ namespace resource_reservation_system_backend.Mapper;
 
 public static class DepartmentMapper
 {
-  public static DepartmentDTO ToDepartmentDTO(this Department department)
+  public static SummaryDepartmentDTO ToDepartmentDTO(this Department department)
   {
-    return new DepartmentDTO
+    return new SummaryDepartmentDTO
     {
       Id = department.Id,
       Name = department.Name
+    };
+  }
+
+  public static DetailedDepartmentDTO ToDetailedDepartmentDTO(this Department department)
+  {
+    return new DetailedDepartmentDTO
+    {
+      Id = department.Id,
+      Name = department.Name,
+      Facilities = department.Facilities.Select(f => f.ToSummarizedFacilityDTO())
     };
   }
 }
