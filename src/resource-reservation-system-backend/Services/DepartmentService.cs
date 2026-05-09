@@ -42,7 +42,12 @@ public class DepartmentService : IDepartmentService
 
   public async Task<DetailedDepartmentDTO> GetDepartmentById(int id)
   {
-    var department = await _context.Departments.FindAsync(id);
+    var department = await _context.Departments
+      .Include(d => d.Facilities)
+      .Where(d => d.Id == id)
+      .AsSplitQuery()
+      .FirstOrDefaultAsync();
+    
     return department?.ToDetailedDepartmentDTO() ?? throw new KeyNotFoundException("Department not found");
   }
 
