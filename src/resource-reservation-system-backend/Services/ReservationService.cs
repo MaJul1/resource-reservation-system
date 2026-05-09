@@ -93,7 +93,7 @@ public class ReservationService : IReservationService
 
   public async Task<IEnumerable<ReservationDTO>> GetByResourceId(int resourceId, int page, int size, string sortBy)
   {
-    if (!await _context.Resources.AnyAsync(r => r.Id == resourceId))
+    if (!await _context.Facilities.AnyAsync(r => r.Id == resourceId))
       throw new KeyNotFoundException($"Resource with an id of {resourceId} not found.");
 
     var reservations = _context.Reservations
@@ -183,7 +183,7 @@ public class ReservationService : IReservationService
     if (DateTimeUtils.GetMinutesDifference(request.Start, request.End) < 60)
       throw new ArgumentException("Start and End time should be at least 60 minutes long");
 
-    if (!await _context.Resources.AnyAsync(r => r.Id == request.ResourceId))
+    if (!await _context.Facilities.AnyAsync(r => r.Id == request.ResourceId))
       throw new KeyNotFoundException($"Resource with an id of {request.Id} not found");
 
     if (!await IsReservationTimeAvailable(request))

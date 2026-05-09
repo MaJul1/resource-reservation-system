@@ -20,14 +20,14 @@ public class ResourceService : IResourceService
   {
     var resource = request.ToResource();
 
-    _context.Resources.Add(resource);
+    _context.Facilities.Add(resource);
 
     await _context.SaveChangesAsync();
   }
 
   public async Task<ResourceDTO> GetResourceById(int id)
   {
-    var resource = await _context.Resources.FindAsync(id) ?? 
+    var resource = await _context.Facilities.FindAsync(id) ?? 
       throw new KeyNotFoundException($"Resource with an id of {id} not found.");
     
     return resource.ToResourceDTO();
@@ -36,14 +36,14 @@ public class ResourceService : IResourceService
   public async Task<IEnumerable<NameAndIdDTO>> GetResourceNamesAndId()
   {
     return await 
-      _context.Resources.Select(r => r.ToNameAndIdDTO()).ToListAsync();
+      _context.Facilities.Select(r => r.ToNameAndIdDTO()).ToListAsync();
   }
 
   public async Task<IEnumerable<ResourceDTO>> GetResources(int page, int size, string sortBy)
   {
-    var resources = sortBy == "name" ? _context.Resources.OrderBy(e => e.Name) : 
-    sortBy == "type" ? _context.Resources.OrderBy(e => e.Type) :
-    _context.Resources.OrderBy(e => e.Id);
+    var resources = sortBy == "name" ? _context.Facilities.OrderBy(e => e.Name) : 
+    sortBy == "type" ? _context.Facilities.OrderBy(e => e.Type) :
+    _context.Facilities.OrderBy(e => e.Id);
 
     var pagedResource = resources.Skip((page - 1) * size).Take(size);
 

@@ -2,7 +2,7 @@ using System;
 
 namespace resource_reservation_system_backend.Models;
 
-public class Facilities
+public class Facility
 {
   public int Id {get; set;}
   public string Name {get; set;} = null!;

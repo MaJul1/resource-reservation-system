@@ -6,7 +6,7 @@ namespace resource_reservation_system_backend.Mapper;
 
 public static class FacilityMapper
 {
-  public static ResourceDTO ToResourceDTO(this Facilities facility)
+  public static ResourceDTO ToResourceDTO(this Facility facility)
   {
     ResourceDTO dto = new ()
     {
@@ -19,9 +19,9 @@ public static class FacilityMapper
     return dto;
   }
 
-  public static Facilities ToResource(this CreateResourceRequestDTO dto)
+  public static Facility ToResource(this CreateResourceRequestDTO dto)
   {
-    Facilities facility = new ()
+    Facility facility = new ()
     {
       Name = dto.Name,
       Type = dto.Type,
@@ -31,7 +31,7 @@ public static class FacilityMapper
     return facility;
   }
 
-  public static NameAndIdDTO ToNameAndIdDTO(this Facilities facility)
+  public static NameAndIdDTO ToNameAndIdDTO(this Facility facility)
   {
     NameAndIdDTO dto = new ()
     {

@@ -13,5 +13,5 @@ public class Reservation
   public int UserId {get ;set;}
   public User User {get; set;} = null!;
   public int ResourceId {get; set;}
-  public Resource Resource {get; set;} = null!;
+  public Facility Resource {get; set;} = null!;
 }

@@ -50,10 +50,10 @@ namespace resource_reservation_system_backend.Controllers
             return Ok();
         }
 
-        [HttpPost("approve-reservation")]
+        [HttpPost("ongoing-reservation")]
         public async Task<IActionResult> ApproveReservation(int id)
         {
-            await _reservationService.ApproveAsync(id);
+            await _reservationService.MarkAsOngoing(id);
 
             return Ok();
         } 
@@ -66,10 +66,10 @@ namespace resource_reservation_system_backend.Controllers
             return Ok();
         }
 
-        [HttpPost("deny-reservation")]
+        [HttpPost("done-reservation")]
         public async Task<IActionResult> DenyReservation(int id)
         {
-            await _reservationService.DenyAsync(id);
+            await _reservationService.MarkAsDone(id);
 
             return Ok();
         }

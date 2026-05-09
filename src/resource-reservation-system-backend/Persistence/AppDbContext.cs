@@ -9,7 +9,7 @@ public class AppDbContext : DbContext
   { }
 
   public DbSet<Reservation> Reservations {get; set;}
-  public DbSet<Resource> Resources {get; set;}
+  public DbSet<Facility> Facilities {get; set;}
   public DbSet<User> Users {get; set;}
 
   protected override void OnModelCreating(ModelBuilder builder)
