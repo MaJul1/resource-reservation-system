@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
-using resource_reservation_system_backend.Background;
 using resource_reservation_system_backend.Interfaces;
 using resource_reservation_system_backend.Persistence;
 using resource_reservation_system_backend.Services;
@@ -25,7 +24,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddHostedService<StatusUpdateBackgroundService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {

@@ -12,7 +12,7 @@ public interface IReservationService
   Task<ReservationDTO?> GetByIdAsync(int id);
   Task CreateAsync(CreateReservationRequestDTO request);
   Task MoveAsync(MoveReservationRequestDTO request);
-  Task ApproveAsync(int id);
-  Task DenyAsync(int id);
+  Task MarkAsOngoing(int id);
+  Task MarkAsDone(int id);
   Task CancelAsync(int id);
 }

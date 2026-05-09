@@ -20,29 +20,14 @@ public class ReservationService : IReservationService
     _emailSender = emailSender;
   }
 
-  public async Task ApproveAsync(int id)
-  {
-    var reservation = await GetByIdOrThrowAsync(id);
-
-    if (reservation.Status != Enums.Status.PENDING) 
-      throw new ArgumentException($"Non pending reservation cannot be approved.");
-    
-    reservation.Status = Enums.Status.APPROVED;
-
-    await _context.SaveChangesAsync();
-    
-    _ = _emailSender.SendEmailAsync(reservation.User.Email, "Approved Reservation", "Your reservation has been approved.");
-
-  }
-
   public async Task CancelAsync(int id)
   {
-    var validStatus = new [] {Enums.Status.PENDING, Enums.Status.APPROVED};
+    var validStatus = new [] {Enums.Status.PENDING};
 
     var reservation = await GetByIdOrThrowAsync(id);
 
     if (!validStatus.Contains(reservation.Status))
-      throw new ArgumentException("Only pending and approved status can be cancelled");
+      throw new ArgumentException("Only pending status can be cancelled");
 
     reservation.Status = Enums.Status.CANCELLED;
 
@@ -60,20 +45,6 @@ public class ReservationService : IReservationService
     _context.Reservations.Add(reservation);
 
     await _context.SaveChangesAsync();
-  }
-
-  public async Task DenyAsync(int id)
-  {
-    var reservation = await GetByIdOrThrowAsync(id);
-
-    if (reservation.Status != Enums.Status.PENDING) 
-      throw new ArgumentException($"Non pending reservation cannot be denied.");
-    
-    reservation.Status = Enums.Status.DENIED;
-
-    await _context.SaveChangesAsync();
-    
-    _ = _emailSender.SendEmailAsync(reservation.User.Email, "Denied Reservation", "Your reservation has been denied.");
   }
 
   public async Task<IEnumerable<ReservationDTO>> GetAllAsync()
@@ -143,6 +114,30 @@ public class ReservationService : IReservationService
     return await dto.ToListAsync();
   }
 
+  public async Task MarkAsDone(int id)
+  {
+    var reservation = await GetByIdOrThrowAsync(id);
+
+    if (reservation.Status !=  Enums.Status.ONGOING)
+      throw new ArgumentException("Unable to mark reservation done because it is not ongoing. ");
+    
+    reservation.Status = Enums.Status.DONE;
+
+    await _context.SaveChangesAsync();
+  }
+
+  public async Task MarkAsOngoing(int id)
+  {
+    var reservation = await GetByIdOrThrowAsync(id);
+
+    if (reservation.Status != Enums.Status.PENDING)
+      throw new ArgumentException("Unable to mark reservation ongoing because it is not pending. ");
+
+    reservation.Status = Enums.Status.ONGOING;
+
+    await _context.SaveChangesAsync();
+  }
+
   public async Task MoveAsync(MoveReservationRequestDTO request)
   {
     var reservation = await GetByIdOrThrowAsync(request.Id);
@@ -171,7 +166,6 @@ public class ReservationService : IReservationService
     var excluded = new []
     {
       Enums.Status.CANCELLED,
-      Enums.Status.DENIED
     };
 
     return !await _context.Reservations
