@@ -1,12 +1,12 @@
 using System;
-using resource_reservation_system_backend.DTO.Resource;
+using resource_reservation_system_backend.DTO.Facility;
 using resource_reservation_system_backend.Models;
 
 namespace resource_reservation_system_backend.Mapper;
 
 public static class FacilityMapper
 {
-  public static FacilityDTO ToResourceDTO(this Facility facility)
+  public static FacilityDTO ToFacilityDTO(this Facility facility)
   {
     FacilityDTO dto = new ()
     {

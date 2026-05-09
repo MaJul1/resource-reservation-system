@@ -1,6 +1,6 @@
 using System;
 
-namespace resource_reservation_system_backend.DTO.Resource;
+namespace resource_reservation_system_backend.DTO.Facility;
 
 public class NameAndIdDTO
 {

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using resource_reservation_system_backend.DTO.Resource;
+using resource_reservation_system_backend.DTO.Facility;
 using resource_reservation_system_backend.Interfaces;
 using resource_reservation_system_backend.Models;
 

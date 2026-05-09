@@ -12,6 +12,7 @@ public class AppDbContext : DbContext
   public DbSet<Facility> Facilities {get; set;}
   public DbSet<User> Users {get; set;}
   public DbSet<Department> Departments {get; set;}
+  public DbSet<ItemAllocation> ItemAllocations {get; set;}
 
   protected override void OnModelCreating(ModelBuilder builder)
   {

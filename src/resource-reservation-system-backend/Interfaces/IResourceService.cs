@@ -1,6 +1,6 @@
 using System;
 using resource_reservation_system_backend.DTO.Reservation;
-using resource_reservation_system_backend.DTO.Resource;
+using resource_reservation_system_backend.DTO.Facility;
 
 namespace resource_reservation_system_backend.Interfaces;
 

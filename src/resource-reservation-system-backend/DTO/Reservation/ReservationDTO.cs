@@ -1,5 +1,5 @@
 using System;
-using resource_reservation_system_backend.DTO.Resource;
+using resource_reservation_system_backend.DTO.Facility;
 using resource_reservation_system_backend.DTO.User;
 using resource_reservation_system_backend.Enums;
 
