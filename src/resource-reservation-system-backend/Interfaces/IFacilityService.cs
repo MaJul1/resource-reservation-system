@@ -6,9 +6,9 @@ namespace resource_reservation_system_backend.Interfaces;
 
 public interface IFacilityService
 {
-  Task<IEnumerable<FacilityDTO>> GetFacility(int page, int size, string sortBy);
+  Task<IEnumerable<DetailedFacilityDTO>> GetFacility(int page, int size, string sortBy);
   Task Create(CreateFacilityRequestDTO request);
-  Task<FacilityDTO> GetFacilityById(int id); 
+  Task<DetailedFacilityDTO> GetFacilityById(int id); 
   Task<IEnumerable<NameAndIdDTO>> GetFacilityNamesAndId();
   Task Update(UpdateFacilityRequestDTO request);
   Task Delete(int id);

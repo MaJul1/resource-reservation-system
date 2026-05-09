@@ -3,7 +3,7 @@ using resource_reservation_system_backend.DTO.ItemAllocation;
 
 namespace resource_reservation_system_backend.DTO.Facility;
 
-public class FacilityDTO
+public class DetailedFacilityDTO
 {
   public int Id { get; set; }
   public string Name { get; set; } = null!;

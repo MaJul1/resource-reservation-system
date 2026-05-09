@@ -6,9 +6,9 @@ namespace resource_reservation_system_backend.Mapper;
 
 public static class FacilityMapper
 {
-  public static FacilityDTO ToFacilityDTO(this Facility facility)
+  public static DetailedFacilityDTO ToFacilityDTO(this Facility facility)
   {
-    FacilityDTO dto = new ()
+    DetailedFacilityDTO dto = new ()
     {
       Id = facility.Id,
       Name = facility.Name,
@@ -34,6 +34,21 @@ public static class FacilityMapper
     };
 
     return facility;
+  }
+
+  public static SummarizedFacilityDTO ToSummarizedFacilityDTO(this Facility facility)
+  {
+    SummarizedFacilityDTO dto = new ()
+    {
+      Id = facility.Id,
+      Name = facility.Name,
+      Type = facility.Type,
+      Location = facility.Location,
+      Capacity = facility.Capacity,
+      Description = facility.Description
+    };
+
+    return dto;
   }
 
   public static NameAndIdDTO ToNameAndIdDTO(this Facility facility)
