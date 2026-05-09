@@ -20,7 +20,7 @@ public class FacilityService : IFacilityService
 
   public async Task Create(CreateFacilityRequestDTO request)
   {
-    var resource = request.ToResource();
+    var resource = request.ToFacility();
 
     var items = await _inventoryService.GetAllItems();
 

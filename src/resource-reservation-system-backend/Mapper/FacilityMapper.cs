@@ -15,13 +15,14 @@ public static class FacilityMapper
       Type = facility.Type,
       Location = facility.Location,
       Capacity = facility.Capacity,
-      Description = facility.Description
+      Description = facility.Description,
+      ItemsAllocated = facility.ItemsAllocated.Select(itemAllocation => itemAllocation.ToItemAllocationDTO())
     };
 
     return dto;
   }
 
-  public static Facility ToResource(this CreateFacilityRequestDTO dto)
+  public static Facility ToFacility(this CreateFacilityRequestDTO dto)
   {
     Facility facility = new ()
     {

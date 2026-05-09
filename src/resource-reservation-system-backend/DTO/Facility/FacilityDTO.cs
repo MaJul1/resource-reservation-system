@@ -1,4 +1,5 @@
 using System;
+using resource_reservation_system_backend.DTO.ItemAllocation;
 
 namespace resource_reservation_system_backend.DTO.Facility;
 
@@ -10,4 +11,5 @@ public class FacilityDTO
   public string Location { get; set; } = null!;
   public int Capacity { get; set; }
   public string Description { get; set; } = null!;
+  public IEnumerable<ItemAllocationDTO> ItemsAllocated { get; set; } = [];
 }
