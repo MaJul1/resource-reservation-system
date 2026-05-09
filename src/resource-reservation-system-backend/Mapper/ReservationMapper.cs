@@ -7,15 +7,15 @@ namespace resource_reservation_system_backend.Mapper;
 
 public static class ReservationMapper
 {
-  public static ReservationDTO ToReservationDTO(this Reservation reservation)
+  public static DetailedReservationDTO ToReservationDTO(this Reservation reservation)
   {
-    ReservationDTO dto = new ()
+    DetailedReservationDTO dto = new ()
     {
       Id = reservation.Id,
       Start = DateTimeUtils.ToUtcString(reservation.Start),
       End = DateTimeUtils.ToUtcString(reservation.End),
       Status = reservation.Status,
-      Facility = reservation.Resource.ToDetailedFacilityDTO(),
+      Facility = reservation.Resource.ToSummarizedFacilityDTO(),
       User = reservation.User.ToUserDTO()
     };
 
@@ -30,6 +30,7 @@ public static class ReservationMapper
       End = dto.End,
       Status = Enums.Status.PENDING,
       ResourceId = dto.ResourceId,
+      Purpose = dto.Purpose,
       User = new User()
       {
         FirstName = dto.FirstName,
@@ -40,5 +41,19 @@ public static class ReservationMapper
     };
 
     return reservation;
+  }
+
+  public static SummaryReservationDTO ToSummaryReservationDTO(this Reservation reservation)
+  {
+    SummaryReservationDTO dto = new ()
+    {
+      Id = reservation.Id,
+      Start = DateTimeUtils.ToUtcString(reservation.Start),
+      End = DateTimeUtils.ToUtcString(reservation.End),
+      Purpose = reservation.Purpose,
+      Status = reservation.Status
+    };
+
+    return dto;
   }
 }

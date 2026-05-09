@@ -47,7 +47,7 @@ public class ReservationService : IReservationService
     await _context.SaveChangesAsync();
   }
 
-  public async Task<IEnumerable<ReservationDTO>> GetAllAsync()
+  public async Task<IEnumerable<DetailedReservationDTO>> GetAllAsync()
   {
     return await _context.Reservations
       .Include(r => r.User)
@@ -55,7 +55,7 @@ public class ReservationService : IReservationService
       .ToListAsync();
   }
 
-  public async Task<IEnumerable<ReservationDTO>> GetAllAsync(int page, int size, string sortBy)
+  public async Task<IEnumerable<DetailedReservationDTO>> GetAllAsync(int page, int size, string sortBy)
   {
     var reservations = _context.Reservations
       .Include(r => r.User)
@@ -76,7 +76,7 @@ public class ReservationService : IReservationService
       .ToListAsync();
   }
 
-  public async Task<ReservationDTO?> GetByIdAsync(int id)
+  public async Task<DetailedReservationDTO?> GetByIdAsync(int id)
   {
     var reservation = await _context.Reservations
       .Include(r => r.User)
@@ -91,7 +91,7 @@ public class ReservationService : IReservationService
     return dto;
   }
 
-  public async Task<IEnumerable<ReservationDTO>> GetByResourceId(int resourceId, int page, int size, string sortBy)
+  public async Task<IEnumerable<DetailedReservationDTO>> GetByResourceId(int resourceId, int page, int size, string sortBy)
   {
     if (!await _context.Facilities.AnyAsync(r => r.Id == resourceId))
       throw new KeyNotFoundException($"Resource with an id of {resourceId} not found.");

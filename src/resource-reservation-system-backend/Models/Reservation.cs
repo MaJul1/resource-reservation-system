@@ -8,6 +8,7 @@ public class Reservation
   public int Id {get; set;}
   public DateTime Start {get; set;}
   public DateTime End {get; set;}
+  public string Purpose {get; set;} = null!;
   public Status Status {get; set;}
 
   public int UserId {get ;set;}
