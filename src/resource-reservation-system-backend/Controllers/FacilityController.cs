@@ -23,7 +23,7 @@ namespace resource_reservation_system_backend.Controllers
         }
 
         [HttpGet("get-facilities")]
-        public async Task<IActionResult> GetFacility(int? page, int? size, string? sortBy)
+        public async Task<ActionResult<IEnumerable<SummarizedFacilityDTO>>> GetFacility(int? page, int? size, string? sortBy)
         {
             var result = await _service.GetFacility(page: page ?? 1, size: size ?? 20, sortBy ?? "id");
 
@@ -31,7 +31,7 @@ namespace resource_reservation_system_backend.Controllers
         }
 
         [HttpGet("get-facilities-info")]
-        public async Task<IActionResult> GetFacilityNameAndId()
+        public async Task<ActionResult<IEnumerable<NameAndIdDTO>>> GetFacilityNameAndId()
         {
             var result = await _service.GetFacilityNamesAndId();
 
@@ -39,7 +39,7 @@ namespace resource_reservation_system_backend.Controllers
         }
 
         [HttpGet("get-facility-by-id")]
-        public async Task<IActionResult> GetFacilityById(int id)
+        public async Task<ActionResult<DetailedFacilityDTO>> GetFacilityById(int id)
         {
             var result = await _service.GetFacilityById(id);
 

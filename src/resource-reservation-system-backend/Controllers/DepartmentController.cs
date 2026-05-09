@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using resource_reservation_system_backend.DTO.Department;
 using resource_reservation_system_backend.Interfaces;
 
 namespace resource_reservation_system_backend.Controllers
@@ -13,36 +14,36 @@ namespace resource_reservation_system_backend.Controllers
     {
       _service = service;
     }
-    [HttpGet]
-    public async Task<IActionResult> GetDepartments()
+    [HttpGet("get-departments")]
+    public async Task<ActionResult<SummaryDepartmentDTO>> GetDepartments()
     {
       var departments = await _service.GetAllDepartments();
       return Ok(departments);
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetDepartmentById(int id)
+    [HttpGet("get-department-by-id")]
+    public async Task<ActionResult<DetailedDepartmentDTO>> GetDepartmentById(int id)
     {
       var department = await _service.GetDepartmentById(id);
       return Ok(department);
     }
 
-    [HttpPost]
+    [HttpPost("create-department")]
     public async Task<IActionResult> CreateDepartment([FromBody] string name)
     {
       await _service.CreateDepartment(name);
       return Ok();
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateDepartment(int id, [FromBody] string name)
+    [HttpPut("update-department")]
+    public async Task<IActionResult> UpdateDepartment([FromBody] int id, [FromBody] string name)
     {
       await _service.UpdateDepartment(id, name);
       return Ok();
 
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("delete-department")]
     public async Task<IActionResult> DeleteDepartment(int id)
     {
       await _service.DeleteDepartment(id);
