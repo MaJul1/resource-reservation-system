@@ -10,6 +10,7 @@ public class CreateFacilityRequestDTO
   public int Capacity { get; set; }
   public string Description { get; set; } = null!;
   public IEnumerable<ItemRecordDTO> ItemsAllocated { get; set; } = [];
+  public IEnumerable<int> DepartmentIds { get; set; } = [];
 }
 
 public record ItemRecordDTO (int InventoryId, int Quantity);

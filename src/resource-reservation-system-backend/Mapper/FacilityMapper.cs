@@ -31,7 +31,8 @@ public static class FacilityMapper
       Type = dto.Type,
       Location = dto.Location,
       Capacity = dto.Capacity,
-      Description = dto.Description
+      Description = dto.Description,
+      Departments = [.. dto.DepartmentIds.Select(id => new Department { Id = id })],
     };
 
     return facility;

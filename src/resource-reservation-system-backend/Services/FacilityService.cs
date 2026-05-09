@@ -12,7 +12,7 @@ public class FacilityService : IFacilityService
 {
   private readonly AppDbContext _context;
   private readonly IInventoryService _inventoryService;
-  public FacilityService (AppDbContext context, IInventoryService inventoryService)
+  public FacilityService(AppDbContext context, IInventoryService inventoryService)
   {
     _context = context;
     _inventoryService = inventoryService;
@@ -24,9 +24,17 @@ public class FacilityService : IFacilityService
 
     var items = await _inventoryService.GetAllItems();
 
+    var departments = await _context.Departments.Where(d => request.DepartmentIds.Contains(d.Id)).ToListAsync();
+    if (departments.Count != request.DepartmentIds.Count())
+    {
+      var existingDepartmentIds = departments.Select(d => d.Id);
+      var nonExistingDepartmentIds = request.DepartmentIds.Where(id => !existingDepartmentIds.Contains(id));
+      throw new KeyNotFoundException($"Departments with the following ids were not found: {string.Join(", ", nonExistingDepartmentIds)}");
+    }
+
     foreach (var item in request.ItemsAllocated)
     {
-      var inventoryItem = items.FirstOrDefault(i => i.Inventory_id == item.InventoryId) 
+      var inventoryItem = items.FirstOrDefault(i => i.Inventory_id == item.InventoryId)
         ?? throw new KeyNotFoundException($"Item with an id of {item.InventoryId} not found in inventory.");
       if (inventoryItem.Quantity < item.Quantity)
       {
@@ -60,7 +68,7 @@ public class FacilityService : IFacilityService
       .AsSplitQuery()
       .FirstOrDefaultAsync()
       ?? throw new KeyNotFoundException($"Resource with an id of {id} not found.");
-    
+
     return resource.ToDetailedFacilityDTO();
   }
 
@@ -71,8 +79,8 @@ public class FacilityService : IFacilityService
 
   public async Task<IEnumerable<SummarizedFacilityDTO>> GetFacility(int page, int size, string sortBy)
   {
-    var resources = sortBy == "name" ? 
-    _context.Facilities.OrderBy(e => e.Name) : sortBy == "type" ? 
+    var resources = sortBy == "name" ?
+    _context.Facilities.OrderBy(e => e.Name) : sortBy == "type" ?
     _context.Facilities.OrderBy(e => e.Type) :
     _context.Facilities.OrderBy(e => e.Id);
 
@@ -84,14 +92,23 @@ public class FacilityService : IFacilityService
 
   public async Task Update(UpdateFacilityRequestDTO request)
   {
-    var facility = await _context.Facilities.FindAsync(request.Id) ?? 
+    var facility = await _context.Facilities.FindAsync(request.Id) ??
       throw new KeyNotFoundException($"Resource with an id of {request.Id} not found.");
+
+    var departments = await _context.Departments.Where(d => request.DepartmentIds.Contains(d.Id)).ToListAsync();
+    if (departments.Count != request.DepartmentIds.Count())
+    {
+      var existingDepartmentIds = departments.Select(d => d.Id);
+      var nonExistingDepartmentIds = request.DepartmentIds.Where(id => !existingDepartmentIds.Contains(id));
+      throw new KeyNotFoundException($"Departments with the following ids were not found: {string.Join(", ", nonExistingDepartmentIds)}");
+    }
 
     facility.Name = request.Name;
     facility.Type = request.Type;
     facility.Location = request.Location;
     facility.Capacity = request.Capacity;
     facility.Description = request.Description;
+    facility.Departments = departments;
 
     _context.Facilities.Update(facility);
     await _context.SaveChangesAsync();
@@ -99,7 +116,7 @@ public class FacilityService : IFacilityService
 
   public async Task Delete(int id)
   {
-    var facility = await _context.Facilities.FindAsync(id) ?? 
+    var facility = await _context.Facilities.FindAsync(id) ??
       throw new KeyNotFoundException($"Resource with an id of {id} not found.");
 
     _context.Facilities.Remove(facility);
