@@ -27,7 +27,7 @@ namespace resource_reservation_system_backend.Controllers
         [HttpGet("get-facilities")]
         public async Task<IActionResult> GetFacility(int? page, int? size, string? sortBy)
         {
-            var result = await _service.GetFacility(page: page ?? 1, size: size ?? 20, sortBy: sortBy = "id");
+            var result = await _service.GetFacility(page: page ?? 1, size: size ?? 20, sortBy ?? "id");
 
             return Ok(result);
         }
@@ -40,7 +40,7 @@ namespace resource_reservation_system_backend.Controllers
             return Ok(result);
         }
 
-        [HttpGet("get-facility-by-id/{id}")]
+        [HttpGet("get-facility-by-id")]
         public async Task<IActionResult> GetFacilityById(int id)
         {
             var result = await _service.GetFacilityById(id);
