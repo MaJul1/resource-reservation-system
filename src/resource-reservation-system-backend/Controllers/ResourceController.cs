@@ -10,40 +10,40 @@ namespace resource_reservation_system_backend.Controllers
     [ApiController]
     public class ResourceController : ControllerBase
     {
-        private readonly IResourceService _service;
-        public ResourceController (IResourceService service)
+        private readonly IFacilityService _service;
+        public ResourceController (IFacilityService service)
         {
             _service = service;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateResource([FromBody]CreateResourceRequestDTO request)
+        public async Task<IActionResult> CreateFacility([FromBody]CreateFacilityRequestDTO request)
         {
             await _service.Create(request);
 
             return Ok();
         }
 
-        [HttpGet("get-resources")]
-        public async Task<IActionResult> GetRessource(int? page, int? size, string? sortBy)
+        [HttpGet("get-facilities")]
+        public async Task<IActionResult> GetFacility(int? page, int? size, string? sortBy)
         {
-            var result = await _service.GetResources(page: page ?? 1, size: size ?? 20, sortBy: sortBy = "id");
+            var result = await _service.GetFacility(page: page ?? 1, size: size ?? 20, sortBy: sortBy = "id");
 
             return Ok(result);
         }
 
-        [HttpGet("get-resources-info")]
-        public async Task<IActionResult> GetResourceNameAndId()
+        [HttpGet("get-facilities-info")]
+        public async Task<IActionResult> GetFacilityNameAndId()
         {
-            var result = await _service.GetResourceNamesAndId();
+            var result = await _service.GetFacilityNamesAndId();
 
             return Ok(result);
         }
 
-        [HttpGet("get-resrouce-by-id/{id}")]
-        public async Task<IActionResult> GetResourceById(int id)
+        [HttpGet("get-facility-by-id/{id}")]
+        public async Task<IActionResult> GetFacilityById(int id)
         {
-            var result = await _service.GetResourceById(id);
+            var result = await _service.GetFacilityById(id);
 
             return Ok(result);
         }

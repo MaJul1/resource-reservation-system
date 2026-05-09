@@ -13,18 +13,22 @@ public static class FacilityMapper
       Id = facility.Id,
       Name = facility.Name,
       Type = facility.Type,
+      Location = facility.Location,
+      Capacity = facility.Capacity,
       Description = facility.Description
     };
 
     return dto;
   }
 
-  public static Facility ToResource(this CreateResourceRequestDTO dto)
+  public static Facility ToResource(this CreateFacilityRequestDTO dto)
   {
     Facility facility = new ()
     {
       Name = dto.Name,
       Type = dto.Type,
+      Location = dto.Location,
+      Capacity = dto.Capacity,
       Description = dto.Description
     };
 

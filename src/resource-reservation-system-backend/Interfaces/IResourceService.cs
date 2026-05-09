@@ -4,10 +4,10 @@ using resource_reservation_system_backend.DTO.Resource;
 
 namespace resource_reservation_system_backend.Interfaces;
 
-public interface IResourceService
+public interface IFacilityService
 {
-  Task<IEnumerable<ResourceDTO>> GetResources(int page, int size, string sortBy);
-  Task Create(CreateResourceRequestDTO request);
-  Task<ResourceDTO> GetResourceById(int id); 
-  Task<IEnumerable<NameAndIdDTO>> GetResourceNamesAndId();
+  Task<IEnumerable<ResourceDTO>> GetFacility(int page, int size, string sortBy);
+  Task Create(CreateFacilityRequestDTO request);
+  Task<ResourceDTO> GetFacilityById(int id); 
+  Task<IEnumerable<NameAndIdDTO>> GetFacilityNamesAndId();
 }

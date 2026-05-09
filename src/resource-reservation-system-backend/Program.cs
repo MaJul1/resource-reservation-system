@@ -11,7 +11,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<IReservationService, ReservationService>();
-builder.Services.AddScoped<IResourceService, ResourceService>();
+builder.Services.AddScoped<IFacilityService, FacilityService>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 builder.Services.AddCors(options =>
@@ -32,15 +32,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+app.MapOpenApi();
+app.UseSwaggerUI(options =>
 {
-    app.MapOpenApi();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/openapi/v1.json", "swagger");
-    });
-    app.UseDeveloperExceptionPage();
-}
+    options.SwaggerEndpoint("/openapi/v1.json", "swagger");
+});
+app.UseDeveloperExceptionPage();
 
 app.UseHttpsRedirection();
 
@@ -65,8 +62,8 @@ app.UseExceptionHandler(exceptionHandlerApp =>
 
         var response = new
         {
-            message = statusCode == 500 
-                ? "An unexpected error occurred." 
+            message = statusCode == 500
+                ? "An unexpected error occurred."
                 : exception?.Message
         };
 
