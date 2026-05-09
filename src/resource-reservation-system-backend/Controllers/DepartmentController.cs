@@ -36,7 +36,7 @@ namespace resource_reservation_system_backend.Controllers
     }
 
     [HttpPut("update-department")]
-    public async Task<IActionResult> UpdateDepartment([FromBody] int id, [FromBody] string name)
+    public async Task<IActionResult> UpdateDepartment(int id, [FromBody] string name)
     {
       await _service.UpdateDepartment(id, name);
       return Ok();
