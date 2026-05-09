@@ -21,21 +21,21 @@ namespace resource_reservation_system_backend.Controllers
         }
 
         [HttpGet("get-reservations")]
-        public async Task<IActionResult> GetReservations(int? size, int? page, string? sortBy)
+        public async Task<ActionResult<IEnumerable<SummaryReservationDTO>>> GetReservations(int? size, int? page, string? sortBy)
         {   
             var result = await _reservationService.GetAllAsync(page: page ?? 1,size: size ?? 20 , sortBy ?? "id");
 
             return Ok(result);
         }
         [HttpGet("get-reservation/{id}")]
-        public async Task<IActionResult> GetReservationById(int id) {
+        public async Task<ActionResult<DetailedReservationDTO>> GetReservationById(int id) {
             var result = await _reservationService.GetByIdAsync(id);
 
             return Ok(result);
         }
 
         [HttpGet("get-reservation-by-resource/{resourceId}")]
-        public async Task<IActionResult> GetReservationByResourceId(int resourceId ,int? size, int? page, string? sortBy)
+        public async Task<ActionResult<IEnumerable<SummaryReservationDTO>>> GetReservationByResourceId(int resourceId ,int? size, int? page, string? sortBy)
         {
             var result = await _reservationService.GetByResourceId(resourceId, page ?? 1, size ?? 20, sortBy ?? "id");
 
