@@ -11,6 +11,7 @@ public class AppDbContext : DbContext
   public DbSet<Reservation> Reservations {get; set;}
   public DbSet<Facility> Facilities {get; set;}
   public DbSet<User> Users {get; set;}
+  public DbSet<Department> Departments {get; set;}
 
   protected override void OnModelCreating(ModelBuilder builder)
   {

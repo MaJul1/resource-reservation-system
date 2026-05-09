@@ -6,12 +6,12 @@ using resource_reservation_system_backend.Models;
 
 namespace resource_reservation_system_backend.Controllers
 {
-    [Route("api/resource")]
+    [Route("api/facility")]
     [ApiController]
-    public class ResourceController : ControllerBase
+    public class FacilityController : ControllerBase
     {
         private readonly IFacilityService _service;
-        public ResourceController (IFacilityService service)
+        public FacilityController (IFacilityService service)
         {
             _service = service;
         }

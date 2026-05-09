@@ -12,5 +12,7 @@ public class Facility
   public int Capacity {get; set;}
 
   public ICollection<Reservation> Reservations {get; set;} = [];
+  public ICollection<Department> Departments {get; set;} = [];
+  public ICollection<ItemDistribution> Items {get; set;} = [];
 
 }

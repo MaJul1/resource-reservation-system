@@ -12,6 +12,6 @@ public class ReservationDTO
   public string End {get; set;} = null!;
   public string Purppose {get; set;} = null!;
   public Status Status {get; set;}
-  public ResourceDTO Resource {get; set;} = null!;
+  public FacilityDTO Facility {get; set;} = null!;
   public UserDTO User {get; set;} = null!;
 }

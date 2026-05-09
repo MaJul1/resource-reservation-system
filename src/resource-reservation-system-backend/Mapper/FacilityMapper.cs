@@ -6,9 +6,9 @@ namespace resource_reservation_system_backend.Mapper;
 
 public static class FacilityMapper
 {
-  public static ResourceDTO ToResourceDTO(this Facility facility)
+  public static FacilityDTO ToResourceDTO(this Facility facility)
   {
-    ResourceDTO dto = new ()
+    FacilityDTO dto = new ()
     {
       Id = facility.Id,
       Name = facility.Name,

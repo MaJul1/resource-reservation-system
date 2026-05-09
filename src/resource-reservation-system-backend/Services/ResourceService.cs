@@ -25,7 +25,7 @@ public class FacilityService : IFacilityService
     await _context.SaveChangesAsync();
   }
 
-  public async Task<ResourceDTO> GetFacilityById(int id)
+  public async Task<FacilityDTO> GetFacilityById(int id)
   {
     var resource = await _context.Facilities.FindAsync(id) ?? 
       throw new KeyNotFoundException($"Resource with an id of {id} not found.");
@@ -39,7 +39,7 @@ public class FacilityService : IFacilityService
       _context.Facilities.Select(r => r.ToNameAndIdDTO()).ToListAsync();
   }
 
-  public async Task<IEnumerable<ResourceDTO>> GetFacility(int page, int size, string sortBy)
+  public async Task<IEnumerable<FacilityDTO>> GetFacility(int page, int size, string sortBy)
   {
     var resources = sortBy == "name" ? _context.Facilities.OrderBy(e => e.Name) : 
     sortBy == "type" ? _context.Facilities.OrderBy(e => e.Type) :

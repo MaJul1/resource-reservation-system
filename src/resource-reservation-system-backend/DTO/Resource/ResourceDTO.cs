@@ -2,7 +2,7 @@ using System;
 
 namespace resource_reservation_system_backend.DTO.Resource;
 
-public class ResourceDTO
+public class FacilityDTO
 {
   public int Id { get; set; }
   public string Name { get; set; } = null!;
