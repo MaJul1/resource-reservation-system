@@ -9,6 +9,6 @@ public class ItemAllocation
   public string Name {get; set;} = null!;
   public int Quantity {get; set;}
 
-  public int ReservationId {get; set;}
-  public Reservation Reservation {get; set;} = null!;
+  public int FacilityId {get; set;}
+  public Facility Facility {get; set;} = null!;
 }

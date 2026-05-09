@@ -10,6 +10,7 @@ public interface IFacilityService
   Task Create(CreateFacilityRequestDTO request);
   Task<DetailedFacilityDTO> GetFacilityById(int id); 
   Task<IEnumerable<NameAndIdDTO>> GetFacilityNamesAndId();
+  Task AddItemToFacility(int facilityId, int inventoryId, int quantity);
   Task Update(UpdateFacilityRequestDTO request);
   Task Delete(int id);
 }

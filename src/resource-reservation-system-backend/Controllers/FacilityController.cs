@@ -61,5 +61,13 @@ namespace resource_reservation_system_backend.Controllers
 
             return Ok();
         }
+
+        [HttpPost("add-item-to-facility")]
+        public async Task<IActionResult> AddItemToFacility(int facilityId, int inventoryId, int quantity)
+        {
+            await _service.AddItemToFacility(facilityId, inventoryId, quantity);
+
+            return Ok();
+        }
     }
 }

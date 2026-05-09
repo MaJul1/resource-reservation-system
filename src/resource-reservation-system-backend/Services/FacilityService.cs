@@ -122,4 +122,29 @@ public class FacilityService : IFacilityService
     _context.Facilities.Remove(facility);
     await _context.SaveChangesAsync();
   }
+
+  public async Task AddItemToFacility(int facilityId, int inventoryId, int quantity)
+  {
+    var facility = await _context.Facilities
+      .Include(f => f.ItemsAllocated)
+      .FirstOrDefaultAsync(f => f.Id == facilityId) ??
+      throw new KeyNotFoundException($"Resource with an id of {facilityId} not found.");
+
+    var items = await _inventoryService.GetAllItems();
+    var inventoryItem = items.FirstOrDefault(i => i.Inventory_id == inventoryId) 
+      ?? throw new KeyNotFoundException($"Item with an id of {inventoryId} not found.");
+    
+    if (inventoryItem.Quantity < quantity)
+      throw new InvalidOperationException($"Not enough quantity for item with an id of {inventoryId}. Available quantity: {inventoryItem.Quantity}");
+
+    facility.ItemsAllocated.Add(new ItemAllocation
+    {
+      InventoryId = inventoryId,
+      Name = inventoryItem.Name,
+      Quantity = quantity
+    });
+
+    await _context.SaveChangesAsync();
+    await _inventoryService.DeductItem(inventoryId, quantity);
+  }
 }
