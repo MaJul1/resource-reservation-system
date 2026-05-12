@@ -16,7 +16,8 @@ public static class ReservationMapper
       End = DateTimeUtils.ToUtcString(reservation.End),
       Status = reservation.Status,
       Facility = reservation.Resource.ToSummarizedFacilityDTO(),
-      User = reservation.User.ToUserDTO()
+      User = reservation.User.ToUserDTO(),
+      Purpose = reservation.Purpose
     };
 
     return dto;
