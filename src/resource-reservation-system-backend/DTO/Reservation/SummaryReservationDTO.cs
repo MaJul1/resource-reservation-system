@@ -10,4 +10,5 @@ public class SummaryReservationDTO
   public string End { get; set; } = null!;
   public string Purpose { get; set; } = null!;
   public Status Status { get; set; }
+  public string ResourceName { get; set; } = null!;
 }
