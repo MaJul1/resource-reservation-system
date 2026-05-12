@@ -17,7 +17,8 @@ public static class FacilityMapper
       Capacity = facility.Capacity,
       Description = facility.Description,
       ItemsAllocated = facility.ItemsAllocated.Select(itemAllocation => itemAllocation.ToItemAllocationDTO()),
-      Departments = facility.Departments.Select(d => d.ToDepartmentDTO())
+      Departments = facility.Departments.Select(d => d.ToDepartmentDTO()),
+      Reservations = facility.Reservations.Select(r => r.ToSummaryReservationDTO())
     };
 
     return dto;
@@ -47,7 +48,7 @@ public static class FacilityMapper
       Type = facility.Type,
       Location = facility.Location,
       Capacity = facility.Capacity,
-      Description = facility.Description
+      Description = facility.Description    
     };
 
     return dto;

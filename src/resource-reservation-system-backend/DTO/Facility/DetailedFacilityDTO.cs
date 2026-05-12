@@ -1,6 +1,7 @@
 using System;
 using resource_reservation_system_backend.DTO.Department;
 using resource_reservation_system_backend.DTO.ItemAllocation;
+using resource_reservation_system_backend.DTO.Reservation;
 
 namespace resource_reservation_system_backend.DTO.Facility;
 
@@ -14,4 +15,5 @@ public class DetailedFacilityDTO
   public string Description { get; set; } = null!;
   public IEnumerable<ItemAllocationDTO> ItemsAllocated { get; set; } = [];
   public IEnumerable<SummaryDepartmentDTO> Departments { get; set; } = [];
+  public IEnumerable<SummaryReservationDTO> Reservations { get; set; } = [];
 }

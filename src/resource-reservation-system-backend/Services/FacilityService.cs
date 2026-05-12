@@ -64,6 +64,8 @@ public class FacilityService : IFacilityService
     var resource = await _context.Facilities
       .Include(f => f.ItemsAllocated)
       .Include(f => f.Departments)
+      .Include(f => f.Reservations)
+      .ThenInclude(r => r.User)
       .Where(f => f.Id == id)
       .AsSplitQuery()
       .FirstOrDefaultAsync()
