@@ -1,0 +1,83 @@
+@startuml Reservation Creation
+skinparam shadowing false
+skinparam responseMessageBelowArrow true
+skinparam sequenceMessageAlign center
+autonumber
+
+actor "Client/UI" as Client
+boundary "ReservationController" as ReservationController
+control "ReservationService" as ReservationService
+database "SQL Server / AppDbContext" as Db
+participant "DateTimeUtils" as DateTimeUtils
+
+Client -> ReservationController : POST /api/reservation/create-reservation
+ReservationController -> ReservationService : CreateAsync(request)
+ReservationService -> ReservationService : request.ToReservation()
+ReservationService -> Db : Validate reservation time and resource
+Db --> ReservationService : facility exists + no overlap check
+ReservationService -> DateTimeUtils : GetMinutesDifference(start, end)
+DateTimeUtils --> ReservationService : minutes
+
+alt validation fails
+  ReservationService --> ReservationController : throws ArgumentException / KeyNotFoundException
+  ReservationController --> Client : error response
+else validation passes
+  ReservationService -> Db : Add(reservation)
+  ReservationService -> Db : SaveChangesAsync()
+  Db --> ReservationService : persisted
+  ReservationService --> ReservationController : completed
+  ReservationController --> Client : 200 OK
+end
+
+@enduml
+
+@startuml Facility Management
+skinparam shadowing false
+skinparam responseMessageBelowArrow true
+skinparam sequenceMessageAlign center
+autonumber
+
+actor "Client/UI" as Client
+boundary "FacilityController" as FacilityController
+control "FacilityService" as FacilityService
+control "InventoryService" as InventoryService
+database "SQL Server / AppDbContext" as Db
+participant "External Inventory API" as InventoryAPI
+
+Client -> FacilityController : POST /api/facility
+FacilityController -> FacilityService : Create(request)
+FacilityService -> FacilityService : request.ToFacility()
+FacilityService -> InventoryService : GetAllItems()
+InventoryService -> InventoryAPI : GET inventory list
+InventoryAPI --> InventoryService : available items
+InventoryService --> FacilityService : items
+FacilityService -> Db : Query Departments by request.DepartmentIds
+Db --> FacilityService : matched departments
+
+alt department ids missing
+  FacilityService --> FacilityController : throws KeyNotFoundException
+  FacilityController --> Client : error response
+else departments valid
+  loop each allocated item
+    FacilityService -> FacilityService : validate quantity
+    alt quantity insufficient
+      FacilityService --> FacilityController : throws InvalidOperationException
+      FacilityController --> Client : error response
+    else quantity available
+      FacilityService -> FacilityService : add ItemAllocation to facility
+    end
+  end
+
+  FacilityService -> Db : Add(facility)
+  loop each allocated item
+    FacilityService -> InventoryService : DeductItem(itemId, quantity)
+    InventoryService -> InventoryAPI : POST issue item
+    InventoryAPI --> InventoryService : status response
+  end
+  FacilityService -> Db : SaveChangesAsync()
+  Db --> FacilityService : persisted
+  FacilityService --> FacilityController : completed
+  FacilityController --> Client : 200 OK
+end
+
+@enduml

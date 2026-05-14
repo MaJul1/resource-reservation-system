@@ -1,0 +1,75 @@
+@startuml Reservation Creation Activity
+skinparam shadowing false
+skinparam responseMessageBelowArrow true
+skinparam activity {
+  BackgroundColor White
+  BorderColor Black
+  FontColor Black
+}
+
+start
+:Client sends POST /api/reservation/create-reservation;
+:ReservationController receives request;
+:ReservationService.CreateAsync(request);
+:Map request to Reservation entity;
+:Validate start/end time;
+
+if (Start is before End and duration >= 60 minutes?) then (yes)
+  :Check resource exists in database;
+  :Check reservation does not overlap existing active reservations;
+
+  if (Validation passes?) then (yes)
+    :Add reservation to DbContext;
+    :Save changes to SQL Server;
+    :Return 200 OK;
+  else (no)
+    :Throw KeyNotFoundException or ArgumentException;
+    :Return error response;
+  endif
+else (no)
+  :Throw ArgumentException;
+  :Return error response;
+endif
+
+stop
+@enduml
+
+@startuml Facility Management Activity
+skinparam shadowing false
+skinparam responseMessageBelowArrow true
+skinparam activity {
+  BackgroundColor White
+  BorderColor Black
+  FontColor Black
+}
+
+start
+:Client sends POST /api/facility;
+:FacilityController receives request;
+:FacilityService.Create(request);
+:Map request to Facility entity;
+:Fetch available inventory items from external API;
+:Query requested departments from database;
+
+if (All department ids exist?) then (yes)
+  :Loop through allocated items;
+
+  if (Each item has enough quantity?) then (yes)
+    :Add item allocation to facility;
+  else (no)
+    :Throw InvalidOperationException;
+    :Return error response;
+    stop
+  endif
+
+  :Add facility to DbContext;
+  :For each item, call inventory API to deduct quantity;
+  :Save changes to SQL Server;
+  :Return 200 OK;
+else (no)
+  :Throw KeyNotFoundException;
+  :Return error response;
+endif
+
+stop
+@enduml
